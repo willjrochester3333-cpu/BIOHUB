@@ -51,18 +51,27 @@ pip install -r requirements.txt
 python3 -m pytest tests/ -v          # synthetic smoke test (no real data needed)
 python3 -m src.pipeline              # edit TEST_DIR/OUTPUT_PATH at the bottom of pipeline.py
 
-# or the single-file version:
-python3 main.py --test-dir /kaggle/input/biohub-cell-tracking/test \
-                 --output /kaggle/working/submission.csv
+# or the single-file version (test_dir auto-detects a *.zarr folder under
+# /kaggle/input if not given explicitly):
+python3 main.py --output /kaggle/working/submission.csv
 ```
 
 For the actual Kaggle submission, upload `notebook/kaggle_submission.ipynb`
 as a Code Competition notebook, or paste the contents of `main.py` into a
-single notebook cell and call `main(test_dir=..., output_path=...)`. Both
-are fully self-contained (no dependency on this repo's `src/` package) and
-produce byte-identical output — `main.py` is the same detect/link/divide/
+single notebook cell and call:
+
+```python
+submission = main(output_path="/kaggle/working/submission.csv")
+```
+
+Both are fully self-contained (no dependency on this repo's `src/` package)
+and produce byte-identical output — `main.py` is the same detect/link/divide/
 submit logic as `src/`, just inlined into one `main()` function for people
 who'd rather copy-paste one block than manage multiple files.
+`discover_test_dir()` walks `/kaggle/input` looking for a folder that
+directly contains `*.zarr` datasets (preferring one named `test`), since the
+competition slug in the mounted path isn't known ahead of time — pass
+`test_dir=...` explicitly to override.
 
 **Before relying on this for a leaderboard score**, inspect a real test
 `.zarr` volume's layout (`ZarrTimeSeries` in `src/data.py` / the notebook's

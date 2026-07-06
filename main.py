@@ -3,8 +3,11 @@
 Detect -> link -> recover divisions -> write submission.csv, all in one
 `main()` you can paste into a single Kaggle notebook cell or run directly:
 
-    python3 main.py --test-dir /kaggle/input/biohub-cell-tracking/test \
-                     --output /kaggle/working/submission.csv
+    python3 main.py --output /kaggle/working/submission.csv
+
+`test_dir` defaults to auto-detecting a folder containing *.zarr datasets
+under /kaggle/input (the competition slug in the mounted path isn't known
+ahead of time). Pass --test-dir explicitly to override.
 
 No trained model or internet access required. See README.md / src/ for the
 same logic split into modules with tests, if you'd rather work from that.
@@ -28,8 +31,40 @@ from skimage.measure import regionprops
 from skimage.segmentation import watershed
 
 
-def main(test_dir: str = "/kaggle/input/biohub-cell-tracking/test",
+def discover_test_dir(root: str = "/kaggle/input") -> str:
+    """Find a folder under `root` containing *.zarr subfolders.
+
+    Kaggle mounts competition data at /kaggle/input/<competition-slug>/...
+    and the slug isn't known ahead of time, so this walks the tree looking
+    for a directory that directly contains .zarr datasets, preferring one
+    literally named "test". Doesn't descend into .zarr stores themselves
+    (they're directories full of chunk files) to keep the walk fast.
+    """
+    if not os.path.isdir(root):
+        raise FileNotFoundError(f"{root} does not exist")
+
+    candidates = []
+    for dirpath, dirnames, _filenames in os.walk(root):
+        if any(d.endswith(".zarr") for d in dirnames):
+            candidates.append(dirpath)
+        dirnames[:] = [d for d in dirnames if not d.endswith(".zarr")]
+
+    if not candidates:
+        raise FileNotFoundError(
+            f"No folder containing *.zarr subfolders found under {root}. "
+            "Pass test_dir explicitly, e.g. main(test_dir='/kaggle/input/.../test')."
+        )
+
+    preferred = [c for c in candidates if os.path.basename(c).lower() == "test"]
+    return preferred[0] if preferred else candidates[0]
+
+
+def main(test_dir: str | None = None,
          output_path: str = "/kaggle/working/submission.csv") -> pd.DataFrame:
+
+    if test_dir is None:
+        test_dir = discover_test_dir()
+        print(f"Auto-detected test_dir: {test_dir}")
 
     # ---- physical scale (voxel -> micron) and tunable parameters ----
 
@@ -266,7 +301,8 @@ if __name__ == "__main__":
     # a Jupyter/Kaggle/Colab cell, which passes its own kernel launcher flags
     # (e.g. "-f kernel-....json") through sys.argv.
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--test-dir", default="/kaggle/input/biohub-cell-tracking/test")
+    parser.add_argument("--test-dir", default=None,
+                         help="Defaults to auto-detecting a *.zarr folder under /kaggle/input.")
     parser.add_argument("--output", default="/kaggle/working/submission.csv")
     args, _unknown = parser.parse_known_args()
     main(test_dir=args.test_dir, output_path=args.output)
