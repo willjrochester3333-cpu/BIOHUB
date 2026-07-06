@@ -30,6 +30,8 @@ internet access disabled, and to serve as a starting point to improve on.
 ## Layout
 
 ```
+main.py          single-file version: everything inlined into one main()
+notebook/kaggle_submission.ipynb   same thing, split across notebook cells
 src/
   detection.py   3D blob detection for one timepoint volume
   tracking.py    frame-to-frame linking + division recovery
@@ -48,11 +50,19 @@ tests/
 pip install -r requirements.txt
 python3 -m pytest tests/ -v          # synthetic smoke test (no real data needed)
 python3 -m src.pipeline              # edit TEST_DIR/OUTPUT_PATH at the bottom of pipeline.py
+
+# or the single-file version:
+python3 main.py --test-dir /kaggle/input/biohub-cell-tracking/test \
+                 --output /kaggle/working/submission.csv
 ```
 
 For the actual Kaggle submission, upload `notebook/kaggle_submission.ipynb`
-as a Code Competition notebook. It's fully self-contained (no dependency on
-this repo's `src/` package) so it runs standalone on Kaggle.
+as a Code Competition notebook, or paste the contents of `main.py` into a
+single notebook cell and call `main(test_dir=..., output_path=...)`. Both
+are fully self-contained (no dependency on this repo's `src/` package) and
+produce byte-identical output — `main.py` is the same detect/link/divide/
+submit logic as `src/`, just inlined into one `main()` function for people
+who'd rather copy-paste one block than manage multiple files.
 
 **Before relying on this for a leaderboard score**, inspect a real test
 `.zarr` volume's layout (`ZarrTimeSeries` in `src/data.py` / the notebook's
