@@ -262,8 +262,11 @@ def main(test_dir: str = "/kaggle/input/biohub-cell-tracking/test",
 
 
 if __name__ == "__main__":
+    # parse_known_args (not parse_args) so this doesn't crash when run inside
+    # a Jupyter/Kaggle/Colab cell, which passes its own kernel launcher flags
+    # (e.g. "-f kernel-....json") through sys.argv.
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--test-dir", default="/kaggle/input/biohub-cell-tracking/test")
     parser.add_argument("--output", default="/kaggle/working/submission.csv")
-    args = parser.parse_args()
+    args, _unknown = parser.parse_known_args()
     main(test_dir=args.test_dir, output_path=args.output)
