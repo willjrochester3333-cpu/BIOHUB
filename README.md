@@ -35,7 +35,7 @@ notebook/kaggle_submission.ipynb   same thing, split across notebook cells
 src/
   detection.py   3D blob detection for one timepoint volume
   tracking.py    frame-to-frame linking + division recovery
-  data.py        zarr access (single 4D array, or per-timepoint group)
+  data.py        zarr access (OME-NGFF multiscale, bare 4D/5D array, or legacy per-timepoint group)
   submission.py  submission.csv formatting
   pipeline.py    end-to-end driver (discovers test datasets, writes submission.csv)
 notebook/
@@ -73,13 +73,18 @@ directly contains `*.zarr` datasets (preferring one named `test`), since the
 competition slug in the mounted path isn't known ahead of time — pass
 `test_dir=...` explicitly to override.
 
-**Before relying on this for a leaderboard score**, inspect a real test
-`.zarr` volume's layout (`ZarrTimeSeries` in `src/data.py` / the notebook's
-data-access cell currently handles a single `(T, Z, Y, X)` array or a group
-keyed by per-timepoint index — adjust if the real layout differs), and tune
-`DetectionParams` / `TrackingParams` against a few training volumes with
-known ground truth — thresholds and distance gates are density- and
-noise-dependent.
+`ZarrTimeSeries` (in `src/data.py`, `main.py`, and the notebook's data-access
+cell) auto-detects the on-disk layout: OME-NGFF multiscale groups (using the
+`.zattrs` `multiscales`/`axes` metadata to pick the finest resolution level
+and the right time/channel axes), a bare `(T, Z, Y, X)` or `(T, C, Z, Y, X)`
+array, or the legacy convention of one 3D array per timepoint keyed `"0"`,
+`"1"`, .... If a real dataset doesn't fit any of these, run `inspect_zarr(path)`
+(exported alongside `ZarrTimeSeries`) on it to print its structure and adjust
+`ZarrTimeSeries._resolve` accordingly.
+
+**Before relying on this for a leaderboard score**, tune `DetectionParams` /
+`TrackingParams` against a few training volumes with known ground truth —
+thresholds and distance gates are density- and noise-dependent.
 
 ## Where to improve
 

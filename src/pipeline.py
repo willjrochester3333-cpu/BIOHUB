@@ -38,7 +38,39 @@ def discover_test_datasets(test_dir: str) -> list[tuple[str, str]]:
     return [(p, os.path.splitext(os.path.basename(p))[0]) for p in paths]
 
 
-def run(test_dir: str, output_path: str) -> pd.DataFrame:
+def discover_test_dir(root: str = "/kaggle/input") -> str:
+    """Find a folder under `root` containing *.zarr subfolders.
+
+    Kaggle mounts competition data at /kaggle/input/<competition-slug>/...
+    and the slug isn't known ahead of time, so this walks the tree looking
+    for a directory that directly contains .zarr datasets, preferring one
+    literally named "test". Doesn't descend into .zarr stores themselves
+    (they're directories full of chunk files) to keep the walk fast.
+    """
+    if not os.path.isdir(root):
+        raise FileNotFoundError(f"{root} does not exist")
+
+    candidates = []
+    for dirpath, dirnames, _filenames in os.walk(root):
+        if any(d.endswith(".zarr") for d in dirnames):
+            candidates.append(dirpath)
+        dirnames[:] = [d for d in dirnames if not d.endswith(".zarr")]
+
+    if not candidates:
+        raise FileNotFoundError(
+            f"No folder containing *.zarr subfolders found under {root}. "
+            "Pass test_dir explicitly."
+        )
+
+    preferred = [c for c in candidates if os.path.basename(c).lower() == "test"]
+    return preferred[0] if preferred else candidates[0]
+
+
+def run(test_dir: str | None = None, output_path: str = "/kaggle/working/submission.csv") -> pd.DataFrame:
+    if test_dir is None:
+        test_dir = discover_test_dir()
+        print(f"Auto-detected test_dir: {test_dir}")
+
     datasets = discover_test_datasets(test_dir)
     if not datasets:
         raise FileNotFoundError(f"No .zarr datasets found under {test_dir}")
@@ -59,6 +91,4 @@ def run(test_dir: str, output_path: str) -> pd.DataFrame:
 
 
 if __name__ == "__main__":
-    TEST_DIR = "/kaggle/input/biohub-cell-tracking/test"
-    OUTPUT_PATH = "/kaggle/working/submission.csv"
-    run(TEST_DIR, OUTPUT_PATH)
+    run(test_dir=None, output_path="/kaggle/working/submission.csv")
