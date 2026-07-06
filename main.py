@@ -358,6 +358,8 @@ def main(test_dir: str | None = None,
 
     def track_dataset(zarr_path: str, dataset_name: str) -> pd.DataFrame:
         series = ZarrTimeSeries(zarr_path)
+        print(f"[{dataset_name}] {len(series)} timepoint(s) detected "
+              f"(mode={series._mode}, shape={getattr(series._payload[0], 'shape', None)})")
 
         nodes = []
         edges = []

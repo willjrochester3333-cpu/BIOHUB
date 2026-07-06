@@ -23,6 +23,8 @@ TRACKING_PARAMS = TrackingParams()
 
 def track_dataset(zarr_path: str, dataset_name: str) -> pd.DataFrame:
     series = open_dataset(zarr_path)
+    print(f"[{dataset_name}] {len(series)} timepoint(s) detected "
+          f"(mode={series._mode}, shape={getattr(series._payload[0], 'shape', None)})")
     tracker = DatasetTracker(scale=SCALE, params=TRACKING_PARAMS)
 
     for t in range(len(series)):
