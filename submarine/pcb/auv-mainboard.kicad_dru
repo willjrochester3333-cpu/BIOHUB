@@ -1,0 +1,5 @@
+(version 1)
+# Small connector pins next to the board edge only fit one thermal spoke on F.Cu;
+# they are also connected to the B.Cu ground pour.
+(rule "one spoke is enough"
+  (constraint min_resolved_spokes 1))

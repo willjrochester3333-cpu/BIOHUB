@@ -1,0 +1,50 @@
+subsystem,item,specification,qty,unit_gbp,total_gbp,phase,likely_owned,where_to_buy,notes
+Hull & seals,Pressure hull pipe,"PVC-U pressure pipe 90 mm OD, PN10 (4.3 mm wall), 1 m length",1,10.00,10.00,1,,"pond / irrigation pipe supplier, eBay UK","Cut to 380 mm, square ends, 15 deg x 1.5 mm chamfer on the outside edges. Spare for a 2nd try."
+Hull & seals,O-rings,"AS568-238 (88.49 x 3.53 mm) or metric 89 x 3.5 mm, NBR 70 Shore A",6,0.85,5.10,1,,O-ring supplier (eBay UK),2 per end cap + 2 spares. Grooves are sized for a 90.0 mm pipe OD.
+Hull & seals,O-ring grease,"Silicone O-ring / plumber's grease (e.g. Molykote 111), 10-30 g",1,4.00,4.00,1,yes,Screwfix / Amazon UK,Never use petroleum grease on NBR O-rings.
+Hull & seals,Camera window,"Cast acrylic disc 80 mm dia x 8 mm, laser cut, clear (CAST, not extruded)",1,6.00,6.00,1,,UK laser-cutting service (eBay),Send window_80x8.svg / .dxf from cad/drawings.
+Hull & seals,Window sealant,Clear neutral-cure silicone or Sikaflex-291i,1,4.00,4.00,1,yes,Screwfix / B&Q,Bed the window into its recess; the nose ring lip also retains it.
+Hull & seals,Epoxy,2-part epoxy: thin laminating epoxy (coat printed caps) + 5-min epoxy (potting),1,7.00,7.00,1,yes,Amazon UK,Coat the OUTSIDE of the printed caps and fill the mast. Keep it out of the O-ring grooves.
+Hull & seals,Cable glands,"Nylon IP68 cable gland M12 x 1.5, cable 3-6.5 mm (pack of 10)",1,4.00,4.00,1,,Amazon UK / AliExpress,"7 used in the rear cap (4 thrusters, mast cable, LoRa coax, vent tube)."
+Hull & seals,Tap,M12 x 1.5 hand tap (plug),1,5.00,5.00,1,,Amazon UK,Tap the 7 printed 10.5 mm holes in the rear cap; screw glands in with a smear of silicone.
+Hull & seals,Vent / vacuum-test port,6 mm silicone tube 30 cm + stainless M3x10 plug screw + zip tie,1,2.00,2.00,1,,Amazon UK,"Tube through one gland; pump a vacuum, then plug it. Optional brass mini ball valve (+GBP 5)."
+Hull & seals,High-vis paint,Plastic primer + orange spray paint,1,6.00,6.00,opt,,B&Q,Makes the hull easy to find. Mask the last 35 mm of each pipe end (O-ring seal area).
+Structure,PETG filament,"PETG 1.75 mm, 1 kg (black or orange)",1,15.00,15.00,1,yes,any,All printed parts need about 1.0 kg (see cad/print_list.json). Buy 2 kg if you expect reprints.
+Structure,Keel bar,"Aluminium flat bar 25 x 3 mm, 1 m (cut to 370 mm, drill 4.2 mm holes every 20 mm)",1,5.00,5.00,1,,B&Q / eBay,"Non-magnetic, keeps the compass happy."
+Structure,Sled rods,"Aluminium round tube 6 mm OD, 1 m (cut two at 312 mm)",1,3.00,3.00,1,,B&Q / eBay,
+Structure,M4 bolts,A2 stainless M4 x 30 socket cap + nyloc nut + 2 washers,12,0.25,3.00,1,yes,Amazon UK assortment,"8 through the thruster tabs + clamp ears, 4 pinch bolts on the front clamp."
+Structure,M4 countersunk screws,A2 stainless M4 x 12 countersunk,10,0.15,1.50,1,yes,Amazon UK,Keel bar to clamps (6) and ballast pods to keel (4).
+Structure,M3 screws,A2 stainless M3 x 20 socket cap,8,0.12,0.96,1,yes,Amazon UK,Through the front/rear clamps into the nose ring and tail cone flanges.
+Structure,M3 short screws,"A2 stainless M3 x 6 / x 8 (motors, mast, PCB, ESC, sled)",30,0.06,1.80,1,yes,Amazon UK,"16 motor screws, 2 mast, 5 PCB, 4 ESC, 3 sled."
+Structure,Heat-set inserts,"Brass heat-set inserts M3 (x13) and M4 (x10), pack of each",1,5.00,5.00,1,yes,Amazon UK / AliExpress,"Clamps, pods, nose ring, tail cone, mast pad, rear-cap sled bosses."
+Structure,Standoffs,Brass M3 x 20 hex standoffs (rear cap bosses to sled plate),3,0.30,0.90,1,yes,Amazon UK,
+Structure,Ballast,"Lead shot (fishing / reloading), 1 kg",1,8.00,8.00,1,,tackle shop / eBay UK,About 580 g is needed (cad/trim_report.md). Lead is non-magnetic - steel ballast would upset the compass.
+Structure,"Straps, ties, foam","Velcro battery straps, small zip ties, 3 mm black EVA foam sheet",1,4.00,4.00,1,yes,Amazon UK,Foam behind the camera and as the anti-glare ring around the lens.
+Propulsion,Thruster motors,A2212 1000KV brushless outrunner with prop adapter (runs wet in fresh water),4,4.50,18.00,1,,AliExpress / eBay,Rinse in fresh water and spray with corrosion inhibitor after every session.
+Propulsion,Spare motor,A2212 1000KV,1,4.50,4.50,opt,,AliExpress,
+Propulsion,4-in-1 ESC,"4-in-1 ESC 35-45 A, 2-6S, BLHeli_S / Bluejay / AM32, DShot, 30.5 mm mount",1,20.00,20.00,1,,AliExpress / UK drone shops,Firmware puts it in 3D (reversible) mode with DShot commands 10 + 12.
+Propulsion,Thruster cable,"3-core 0.5 mm2 round flexible cable (about 5.5 mm OD), 3 m",1,4.00,4.00,1,,Screwfix / eBay,4 runs: ~0.6 m each (rear cap to motor) plus spare.
+Propulsion,Heat-shrink,Adhesive-lined (marine) heat-shrink assortment,1,3.00,3.00,1,yes,Amazon UK,Seal every wet splice.
+Propulsion,Corrosion inhibitor,ACF-50 / Corrosion-X / silicone spray,1,6.00,6.00,opt,yes,Amazon UK,
+Power,Battery,3S1P 18650 Li-ion pack 11.1 V ~3.0-3.5 Ah with BMS and XT60 (female) lead,1,20.00,20.00,1,,UK battery shop (e.g. custom pack) / eBay,Use reputable cells (Samsung 35E / Molicel). Charge OUTSIDE the hull.
+Power,Second battery pack,"Same 3S1P pack, used in parallel (or a 3S2P pack)",1,20.00,20.00,opt,,,Doubles runtime (the CAD and trim report show two packs fitted).
+Power,Charger,12.6 V 2 A Li-ion charger + XT60 lead (or any hobby balance charger),1,9.00,9.00,opt,yes,Amazon UK,
+Electronics,Microcontroller,Espressif ESP32-S3-DevKitC-1 (N8R8 or N16R8),1,9.00,9.00,1,,AliExpress / The Pi Hut,Plugs into the main board. Program it through the port marked UART.
+Electronics,Main board PCB,"Fabricate pcb/output/auv-mainboard-gerbers.zip: 2 layers, 1.6 mm, 150 x 60 mm, 5 pcs",1,14.00,14.00,1,,JLCPCB / PCBWay (incl. UK VAT + shipping),Any colour. HASL lead-free is fine.
+Electronics,Main board components,"Everything in pcb/output/auv-mainboard-bom.csv (81 parts, mostly 0805 / SOT-23)",1,15.00,15.00,1,,LCSC / AliExpress / Farnell,"Includes XT60/XT30, fuse clips + 15 A fuse, LM2596S-5, FETs, JST connectors, headers."
+Electronics,GPS,"Beitian BN-220 (u-blox M8 class, UART, built-in antenna)",1,9.00,9.00,1,,AliExpress / eBay,Lives in the mast; 4-wire cable through the rear cap.
+Electronics,IMU / compass,BNO085 9-DoF breakout (Adafruit 4754 or GY-BNO08X),1,12.00,12.00,1,,AliExpress / The Pi Hut,Mount flat and square on the IMU bracket.
+Electronics,Depth + water temp,"MS5837-30BA pressure sensor module (or a potted ""Bar30""-style M10 sensor, +GBP 10)",1,11.00,11.00,1,,AliExpress,Through the centre of the rear cap; pot the module in an M10 hollow bolt if you buy the bare board.
+Electronics,Hull monitor,"BME280 breakout (pressure, humidity, temperature inside the hull)",1,3.00,3.00,1,,AliExpress,Early leak warning + automatic vacuum-hold check before every dive.
+Electronics,Magnet switch,Glass reed switch (normally open) + N52 neodymium magnet with lanyard,1,3.00,3.00,1,,Amazon UK,Reed switch glued inside the hull top under the white target ring.
+Electronics,Strobe,"White LED (0.5-1 W) + 47 ohm 1 W resistor, potted in the mast top",1,1.00,1.00,1,yes,any,
+Electronics,Leak probes,Two small pieces of stripboard or bare copper wire pairs + 2-pin JST lead each,2,0.50,1.00,1,yes,DIY,"At the lowest point, one at each end of the hull."
+Electronics,Connectors & wire,"JST PH 2/4/5/7-pin + XH 2-pin pre-crimped leads, 14 AWG silicone (power), 26 AWG hook-up",1,8.00,8.00,1,yes,AliExpress / Amazon UK,
+Electronics,Camera power socket,USB-A female breakout board (bridge D+ to D- so the camera may draw >0.5 A),1,1.00,1.00,1,,AliExpress,Wired to the CAMERA 5V connector J14.
+4K camera,4K camera,"GoPro HERO5 Black (used) - native 4K30, waterproof on its own, Wi-Fi control. HERO6/7 Black fit the same cradle.",1,50.00,50.00,1,,eBay UK / CeX,Budget alternative: any action camera that records NATIVE 3840x2160 (adjust the cradle numbers).
+4K camera,microSD card,64 GB U3 / V30 microSD,1,7.00,7.00,1,yes,any,4K30 at 60 Mb/s = about 27 GB per hour.
+4K camera,USB cable,Short USB-A to USB-C cable (20 cm),1,2.00,2.00,1,yes,any,Powers the camera from the sub so it can record for hours.
+LoRa telemetry,LoRa radios,"Ebyte E220-900T22D (868 MHz, UART) - one in the sub, one on the shore",2,7.00,14.00,2,,AliExpress,"GPS position + status every few seconds when surfaced, km range over water."
+LoRa telemetry,Sub antenna,868 MHz FPC (stick-on) antenna with u.FL + u.FL-to-SMA-male RG178 pigtail 30 cm,1,4.00,4.00,2,,AliExpress,Potted in the mast; coax goes through its own gland.
+LoRa telemetry,Shore antenna,868 MHz SMA rubber-duck antenna,1,3.00,3.00,2,,AliExpress,
+LoRa telemetry,USB-serial adapter,CH340 or CP2102 USB-TTL adapter (3.3 V logic) for the shore radio,1,3.00,3.00,2,yes,AliExpress,Plug into a laptop or phone (OTG); see docs/04-software.md (shore station).

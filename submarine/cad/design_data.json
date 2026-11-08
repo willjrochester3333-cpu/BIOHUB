@@ -1,0 +1,179 @@
+{
+ "params": {
+  "pipe_od": 90.0,
+  "pipe_wall": 4.3,
+  "pipe_len": 380.0,
+  "oring_cs": 3.53,
+  "oring_squeeze": 0.2,
+  "groove_w_factor": 1.4,
+  "cap_bore_clear": 0.2,
+  "cap_sleeve_len": 32.0,
+  "cap_outer_wall": 3.0,
+  "groove1": 10.0,
+  "groove2": 20.0,
+  "front_wall": 14.0,
+  "window_d": 80.0,
+  "window_t": 8.0,
+  "window_recess_clear": 0.3,
+  "window_seat_w": 2.0,
+  "aperture_d": 70.0,
+  "rear_wall": 8.0,
+  "rear_chamfer": 3.0,
+  "gland_ring_r": 26.0,
+  "gland_tap_d": 10.5,
+  "depth_hole_d": 10.3,
+  "boss_r": 36.0,
+  "boss_d": 7.0,
+  "boss_len": 8.0,
+  "clamp_w": 16.0,
+  "clamp_wall": 8.0,
+  "clamp_gap": 1.0,
+  "clamp_front_x": 143.0,
+  "clamp_mid_x": 0.0,
+  "clamp_rear_x": -143.0,
+  "ear_out": 62.0,
+  "ear_h": 8.0,
+  "keel_w": 25.0,
+  "keel_t": 3.0,
+  "keel_x0": -170.0,
+  "keel_x1": 200.0,
+  "pod_l": 120.0,
+  "pod_w": 34.0,
+  "pod_h": 32.0,
+  "pod_wall": 2.4,
+  "duct_id": 54.0,
+  "duct_wall": 3.0,
+  "duct_len": 40.0,
+  "thruster_y": 94.0,
+  "prop_d": 51.0,
+  "prop_pitch": 42.0,
+  "prop_hub_d": 12.0,
+  "prop_hub_len": 8.0,
+  "prop_bore_d": 5.2,
+  "prop_blades": 3,
+  "motor_bell_d": 27.7,
+  "motor_len": 26.0,
+  "mast_chord": 40.0,
+  "mast_thick": 14.0,
+  "mast_h": 58.0,
+  "puck_d": 36.0,
+  "puck_h": 12.0,
+  "cam_w": 62.3,
+  "cam_h": 44.9,
+  "cam_d": 33.0,
+  "cam_lens_y": -14.0,
+  "cam_lens_z": 0.0,
+  "cam_bump": 5.0,
+  "cam_bump_w": 22.0,
+  "cam_gap": 1.0,
+  "batt_l": 65.0,
+  "batt_w": 56.0,
+  "batt_h": 19.0,
+  "batt_count": 2,
+  "pcb_l": 150.0,
+  "pcb_w": 60.0,
+  "pcb_x0": -62.0,
+  "pcb_z": 4.0,
+  "rod_y": 33.0,
+  "rod_z": -9.0,
+  "rod_d": 6.0,
+  "reserve_buoyancy_g": 45.0,
+  "seg": 192
+ },
+ "derived": {
+  "ro_pipe": 45.0,
+  "ri_pipe": 40.7,
+  "x_front": 190.0,
+  "x_rear": -190.0,
+  "rb": 45.2,
+  "gap": 2.824,
+  "rg": 47.824,
+  "gw": 4.941999999999999,
+  "ro_cap": 50.824,
+  "oring_id_target": 89.0,
+  "x_front_face": 204.0,
+  "x_rear_face": -198.0,
+  "rw": 40.15,
+  "rs": 38.15,
+  "ra": 35.0,
+  "duct_ri": 27.0,
+  "duct_ro": 30.0,
+  "clamp_ro": 53.0,
+  "gland_fill": 0.7012483601762932
+ },
+ "trim": {
+  "envelope_cm3": 2706.294133758411,
+  "mass_no_ballast_g": 2631.547213085664,
+  "wet_disp_cm3": 533.4337082208946,
+  "lead_g": 578.6104541202287,
+  "pods": [
+   [
+    130.0,
+    292.24099800222325
+   ],
+   [
+    -10.0,
+    286.3694561180055
+   ]
+  ],
+  "total_mass_g": 3345.620540805893,
+  "displacement_cm3": 3397.4153715489906,
+  "reserve_g": 44.999999999999545,
+  "cg": [
+   -1.4428509113586474,
+   0.0,
+   -17.964172622908006
+  ],
+  "cb": [
+   -1.4428509113586463,
+   0.0,
+   -2.7380157434821273
+  ],
+  "bg_mm": 15.22615687942588,
+  "pod_shell_g": 67.7314368,
+  "pod_capacity_g": 542.975747328
+ },
+ "penetrators": [
+  {
+   "name": "mast cable (GPS+strobe)",
+   "angle_deg": 0.0,
+   "hole_d": 10.5
+  },
+  {
+   "name": "LoRa coax",
+   "angle_deg": 51.4,
+   "hole_d": 10.5
+  },
+  {
+   "name": "thruster H-port",
+   "angle_deg": 102.9,
+   "hole_d": 10.5
+  },
+  {
+   "name": "thruster V-port",
+   "angle_deg": 154.3,
+   "hole_d": 10.5
+  },
+  {
+   "name": "thruster V-stbd",
+   "angle_deg": 205.7,
+   "hole_d": 10.5
+  },
+  {
+   "name": "thruster H-stbd",
+   "angle_deg": 257.1,
+   "hole_d": 10.5
+  },
+  {
+   "name": "vent tube + ball valve",
+   "angle_deg": 308.6,
+   "hole_d": 10.5
+  },
+  {
+   "name": "depth/temp sensor (M10)",
+   "angle_deg": null,
+   "hole_d": 10.3
+  }
+ ],
+ "mast_top_z": 130.0
+}

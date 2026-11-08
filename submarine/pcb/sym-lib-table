@@ -1,0 +1,3 @@
+(sym_lib_table
+  (lib (name "auv")(type "KiCad")(uri "${KIPRJMOD}/auv.kicad_sym")(options "")(descr "Minnow AUV parts"))
+)

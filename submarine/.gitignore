@@ -1,0 +1,7 @@
+# build scratch from the KiCad generator (DSN/SES, logs, loose Gerbers - the zip is in pcb/output)
+pcb/build/
+pcb/*.kicad_prl
+pcb/*-backups/
+pcb/fp-info-cache
+__pycache__/
+*.blend1

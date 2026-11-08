@@ -1,0 +1,288 @@
+[
+ {
+  "file": "00_Oring_fit_test.stl",
+  "qty": 1,
+  "grams_each": 29.5,
+  "bbox_mm": [
+   101.6,
+   101.6,
+   16.0
+  ],
+  "note": "PRINT FIRST. Slide over your pipe with one greased O-ring: it should slide on firmly and seal; adjust cap_bore_clear/oring_squeeze if not."
+ },
+ {
+  "file": "BallastPod_front.stl",
+  "qty": 2,
+  "grams_each": 67.0,
+  "bbox_mm": [
+   120.0,
+   34.0,
+   32.0
+  ],
+  "note": "Open side up. Fill with lead shot, then bolt open side to the keel bar."
+ },
+ {
+  "file": "Clamp_front_lower.stl",
+  "qty": 1,
+  "grams_each": 28.1,
+  "bbox_mm": [
+   55.5,
+   124.0,
+   16.0
+  ],
+  "note": "Print on its side (ring axis vertical), 100% infill or 6 walls+40%."
+ },
+ {
+  "file": "Clamp_front_upper.stl",
+  "qty": 1,
+  "grams_each": 26.8,
+  "bbox_mm": [
+   52.5,
+   124.0,
+   16.0
+  ],
+  "note": "Print on its side (ring axis vertical), 100% infill or 6 walls+40%."
+ },
+ {
+  "file": "Clamp_mid_lower.stl",
+  "qty": 1,
+  "grams_each": 28.6,
+  "bbox_mm": [
+   55.5,
+   124.0,
+   16.0
+  ],
+  "note": "Print on its side (ring axis vertical), 100% infill or 6 walls+40%."
+ },
+ {
+  "file": "Clamp_mid_upper.stl",
+  "qty": 1,
+  "grams_each": 28.4,
+  "bbox_mm": [
+   55.5,
+   124.0,
+   16.0
+  ],
+  "note": "Print on its side (ring axis vertical), 100% infill or 6 walls+40%."
+ },
+ {
+  "file": "Clamp_rear_lower.stl",
+  "qty": 1,
+  "grams_each": 28.1,
+  "bbox_mm": [
+   55.5,
+   124.0,
+   16.0
+  ],
+  "note": "Print on its side (ring axis vertical), 100% infill or 6 walls+40%."
+ },
+ {
+  "file": "Clamp_rear_upper.stl",
+  "qty": 1,
+  "grams_each": 26.8,
+  "bbox_mm": [
+   52.5,
+   124.0,
+   16.0
+  ],
+  "note": "Print on its side (ring axis vertical), 100% infill or 6 walls+40%."
+ },
+ {
+  "file": "Duct_H_port.stl",
+  "qty": 1,
+  "grams_each": 33.3,
+  "bbox_mm": [
+   60.0,
+   77.0,
+   40.0
+  ],
+  "note": "Motor-mount end on the bed, 100% infill."
+ },
+ {
+  "file": "Duct_H_stbd.stl",
+  "qty": 1,
+  "grams_each": 33.3,
+  "bbox_mm": [
+   60.0,
+   77.0,
+   40.0
+  ],
+  "note": "Motor-mount end on the bed, 100% infill."
+ },
+ {
+  "file": "Duct_V_port.stl",
+  "qty": 2,
+  "grams_each": 33.9,
+  "bbox_mm": [
+   77.0,
+   60.0,
+   40.0
+  ],
+  "note": "Motor-mount end on the bed, 100% infill."
+ },
+ {
+  "file": "FrontCap.stl",
+  "qty": 1,
+  "grams_each": 120.9,
+  "bbox_mm": [
+   101.6,
+   101.6,
+   46.0
+  ],
+  "note": "Pressure part: 100% infill, 0.12-0.16 mm layers, window face on the bed. Epoxy-coat outside (not the grooves)."
+ },
+ {
+  "file": "Mast.stl",
+  "qty": 1,
+  "grams_each": 49.3,
+  "bbox_mm": [
+   44.0,
+   36.0,
+   74.0
+  ],
+  "note": "Print in natural/clear PETG with 2 mm walls and NO infill (hollow), then pot GPS, antenna and strobe LED inside with epoxy."
+ },
+ {
+  "file": "NoseRing.stl",
+  "qty": 1,
+  "grams_each": 69.9,
+  "bbox_mm": [
+   107.0,
+   107.0,
+   56.0
+  ],
+  "note": "Lip down. Retains the window and the front cap. 4 x M3 heat-set inserts in the flange; screws come through the front clamp from behind."
+ },
+ {
+  "file": "Prop_H_port_CW.stl",
+  "qty": 2,
+  "grams_each": 2.0,
+  "bbox_mm": [
+   46.1,
+   41.0,
+   8.0
+  ],
+  "note": "Print hub-down with tree supports at 0.12 mm, or in resin."
+ },
+ {
+  "file": "Prop_V_port_CCW.stl",
+  "qty": 2,
+  "grams_each": 2.0,
+  "bbox_mm": [
+   41.0,
+   46.1,
+   8.0
+  ],
+  "note": "Print hub-down with tree supports at 0.12 mm, or in resin."
+ },
+ {
+  "file": "RearCap.stl",
+  "qty": 1,
+  "grams_each": 133.5,
+  "bbox_mm": [
+   101.6,
+   101.6,
+   40.0
+  ],
+  "note": "Pressure part: 100% infill, rear face on the bed. Tap the 7 ring holes M12x1.5. Epoxy-coat outside."
+ },
+ {
+  "file": "Sled_battery_tray.stl",
+  "qty": 1,
+  "grams_each": 21.3,
+  "bbox_mm": [
+   138.0,
+   75.2,
+   23.6
+  ],
+  "note": "Strap batteries down with Velcro."
+ },
+ {
+  "file": "Sled_camera_cradle.stl",
+  "qty": 1,
+  "grams_each": 12.3,
+  "bbox_mm": [
+   34.0,
+   75.2,
+   39.2
+  ],
+  "note": "Add 3 mm foam behind the camera so it is pushed gently to the window."
+ },
+ {
+  "file": "Sled_esc_tray.stl",
+  "qty": 1,
+  "grams_each": 6.4,
+  "bbox_mm": [
+   42.0,
+   75.2,
+   23.6
+  ],
+  "note": "30.5 mm M3 pattern for the 4-in-1 ESC."
+ },
+ {
+  "file": "Sled_imu_bracket.stl",
+  "qty": 1,
+  "grams_each": 6.9,
+  "bbox_mm": [
+   30.0,
+   75.2,
+   13.6
+  ],
+  "note": "Keep the IMU flat and square to the hull axis."
+ },
+ {
+  "file": "Sled_pcb_bracket_1.stl",
+  "qty": 1,
+  "grams_each": 1.2,
+  "bbox_mm": [
+   8.0,
+   74.0,
+   8.4
+  ],
+  "note": "Rests across the two battery-tray rod sleeves (zip-tie or glue it); M3 screws into the PCB mounting holes."
+ },
+ {
+  "file": "Sled_pcb_bracket_2.stl",
+  "qty": 1,
+  "grams_each": 1.2,
+  "bbox_mm": [
+   8.0,
+   74.0,
+   8.4
+  ],
+  "note": "Rests across the two battery-tray rod sleeves (zip-tie or glue it); M3 screws into the PCB mounting holes."
+ },
+ {
+  "file": "Sled_pcb_front_post.stl",
+  "qty": 1,
+  "grams_each": 1.4,
+  "bbox_mm": [
+   8.0,
+   75.2,
+   17.6
+  ],
+  "note": "Clamps onto the rods in front of the battery tray; supports the PCB at hole H5."
+ },
+ {
+  "file": "Sled_rear_plate.stl",
+  "qty": 1,
+  "grams_each": 8.6,
+  "bbox_mm": [
+   78.4,
+   78.4,
+   4.0
+  ],
+  "note": "Any infill. Clamp the two 6 mm rods."
+ },
+ {
+  "file": "TailCone.stl",
+  "qty": 1,
+  "grams_each": 109.9,
+  "bbox_mm": [
+   107.3,
+   107.3,
+   109.0
+  ],
+  "note": "Flange down. Seats on the rear-cap chamfer and holds the rear cap on. 4 x M3 heat-set inserts in the flange."
+ }
+]
