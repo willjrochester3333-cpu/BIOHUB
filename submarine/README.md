@@ -81,6 +81,7 @@ flowchart LR
 ## Budget
 
 The full itemised list is [`bom/bom.csv`](bom/bom.csv); the summary is [`bom/bom_summary.md`](bom/bom_summary.md).
+**Ready to order? Use the [shopping list](bom/shopping_list.md)**: every part, grouped by shop, with links.
 
 | | Cost |
 |---|---:|
@@ -119,8 +120,8 @@ cd submarine/pcb && FREEROUTING_JAR=/path/to/freerouting.jar python3 generate_bo
 ```
 
 ```bash
-# Parts list and budget
-cd submarine/bom && python3 make_bom.py
+# Parts list, budget and shopping list
+cd submarine/bom && python3 make_bom.py && python3 make_shopping_list.py
 ```
 
 ## Safety, in short
