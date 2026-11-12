@@ -22,6 +22,11 @@ code can be written (and tested) one piece at a time.
 | Logs | LittleFS binary log, downloaded over Wi-Fi as CSV |
 | Bench web page and updates | Web server + Update (over-the-air firmware) |
 
+> **Building the Minnow Core board?** It uses the classic ESP32 (board "ESP32 Dev Module"), a BNO055 compass
+> (library *Adafruit BNO055*) and a Ra-01H LoRa radio driven with *RadioLib*; the shore station is a second Core
+> board on USB. Its pin map and library settings are in [`pcb-core/README.md`](../pcb-core/README.md#esp32-pin-map).
+> Everything else in this chapter (state machine, control loops, failsafes, telemetry format) is the same.
+
 ## 4.2 Structure
 
 The firmware is a set of FreeRTOS tasks that share one "vehicle state" structure protected by a mutex:

@@ -122,6 +122,16 @@ def derived(p):
 
 D = derived(P)
 
+# Which electronics board the model shows: 'carrier' = rev 1 (../pcb, reed switch on the hull top,
+# separate IMU breakout), 'core' = Minnow Core (../pcb-core, everything on the board, magnet
+# sensor on the board's port edge). Set with --core on the command line.
+BOARD = {'name': 'carrier'}
+CORE_MAGNET_BX = 8.5      # pcb-core/design.py MAGNET_SENSOR_BXBY
+
+
+def pcb_dir():
+    return 'pcb-core' if BOARD['name'] == 'core' else 'pcb'
+
 # =============================================================================
 # LOW LEVEL MESH HELPERS
 # =============================================================================
@@ -529,10 +539,15 @@ def build_mag_target():
     switch inside, see build_internals)."""
     ro = D['ro_pipe']
     bm = bmesh.new()
-    bm_cyl(bm, (-111, 0, ro - 1.0), (-111, 0, ro + 0.6), 9.0, 48)
-    ob = mkobj('MagnetTarget_decal', bm, 'Hull', MAT['decal_white'], dict(kind='pressure', mass_g=0.0))
     cut = bmesh.new()
-    bm_cyl(cut, (-111, 0, ro - 2), (-111, 0, ro + 2), 6.5, 48)
+    if BOARD['name'] == 'core':       # port side, level with the magnet sensor on the board edge
+        xm, zm = P['pcb_x0'] + CORE_MAGNET_BX, P['pcb_z'] + 1.6
+        bm_cyl(bm, (xm, ro - 1.0, zm), (xm, ro + 0.6, zm), 9.0, 48)
+        bm_cyl(cut, (xm, ro - 2, zm), (xm, ro + 2, zm), 6.5, 48)
+    else:
+        bm_cyl(bm, (-111, 0, ro - 1.0), (-111, 0, ro + 0.6), 9.0, 48)
+        bm_cyl(cut, (-111, 0, ro - 2), (-111, 0, ro + 2), 6.5, 48)
+    ob = mkobj('MagnetTarget_decal', bm, 'Hull', MAT['decal_white'], dict(kind='pressure', mass_g=0.0))
     boolean(ob, cut, 'DIFFERENCE')
     cut = bmesh.new()
     bm_cyl(cut, (D['x_rear'], 0, 0), (D['x_front'], 0, 0), ro - 0.2, 192)
@@ -961,7 +976,10 @@ def build_internals(pcb_layout=None):
     obs.append(mkobj('ESC_4in1', bm, 'Internals', MAT['pcb_black'], dict(kind='dry', mass_g=25.0, buy=True)))
     # PCB + modules
     obs += build_pcb_model(pcb_layout)
-    # IMU bracket + board
+    # IMU bracket + board (the core board has the compass on it)
+    if BOARD['name'] == 'core':
+        obs += build_camera(x_rod1) + build_leak_probes(xr, ri)
+        return obs
     ix = 118.0          # IMU well away from the ESC, battery and DevKit
     bm = bmesh.new()
     bm_box(bm, ix - 15, ix + 15, -P['rod_y'], P['rod_y'], P['rod_z'] - 1.5, P['rod_z'] + 1.5)
@@ -982,15 +1000,20 @@ def build_internals(pcb_layout=None):
     obs.append(mkobj('IMU_BNO085', bm, 'Internals', MAT['pcb_black'], dict(kind='dry', mass_g=4.0, buy=True)))
     # camera cradle + camera
     obs += build_camera(x_rod1)
-    # leak probes
-    for name, x in (('LeakProbe_front', D['x_front'] - P['cam_d'] - 20.0), ('LeakProbe_rear', xr + 12.0)):
-        bm = bmesh.new()
-        bm_box(bm, x - 7, x + 7, -5, 5, -ri + 0.6, -ri + 2.2)
-        obs.append(mkobj(name, bm, 'Internals', MAT['pcb_green'], dict(kind='dry', mass_g=2.0, buy=True)))
+    obs += build_leak_probes(xr, ri)
     # reed switch on the top inner wall
     bm = bmesh.new()
     bm_cyl(bm, (-118, 0, ri - 2.0), (-104, 0, ri - 2.0), 1.1, 12)
     obs.append(mkobj('ReedSwitch', bm, 'Internals', MAT['acrylic'], dict(kind='dry', mass_g=1.0, buy=True)))
+    return obs
+
+
+def build_leak_probes(xr, ri):
+    obs = []
+    for name, x in (('LeakProbe_front', D['x_front'] - P['cam_d'] - 20.0), ('LeakProbe_rear', xr + 12.0)):
+        bm = bmesh.new()
+        bm_box(bm, x - 7, x + 7, -5, 5, -ri + 0.6, -ri + 2.2)
+        obs.append(mkobj(name, bm, 'Internals', MAT['pcb_green'], dict(kind='dry', mass_g=2.0, buy=True)))
     return obs
 
 
@@ -1009,7 +1032,7 @@ PCB_BRACKETS = [((24.0, 4.0), (24.0, 56.0)), ((71.5, 4.0), (71.5, 56.5))]
 PCB_FRONT_POST = (96.0, 4.0)
 PCB_COLORS = {'yellow': (0.93, 0.78, 0.10), 'fuse_blue': (0.25, 0.55, 0.95), 'black': (0.03, 0.03, 0.03),
               'tan': (0.62, 0.50, 0.33), 'led_green': (0.2, 0.8, 0.3), 'cap_blue': (0.08, 0.12, 0.35),
-              'beige': (0.90, 0.86, 0.76)}
+              'beige': (0.90, 0.86, 0.76), 'esp_silver': (0.72, 0.72, 0.74)}
 
 
 def board_to_vehicle(bx, by):
@@ -1017,7 +1040,7 @@ def board_to_vehicle(bx, by):
 
 
 def pcb_texture_material():
-    img_path = os.path.join(script_dir(), '..', 'pcb', 'output', 'board_top.png')
+    img_path = os.path.join(script_dir(), '..', pcb_dir(), 'output', 'board_top.png')
     if not os.path.exists(img_path):
         return MAT['pcb_green']
     m = bpy.data.materials.new('pcb_texture')
@@ -1776,7 +1799,9 @@ def main(argv):
     if '--out' in argv:
         out = argv[argv.index('--out') + 1]
     layout = None
-    lp = os.path.join(script_dir(), '..', 'pcb', 'placement.json')
+    if '--core' in argv:
+        BOARD['name'] = 'core'
+    lp = os.path.join(script_dir(), '..', pcb_dir(), 'placement.json')
     if os.path.exists(lp):
         with open(lp) as f:
             layout = json.load(f)

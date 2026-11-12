@@ -5,3 +5,7 @@ pcb/*-backups/
 pcb/fp-info-cache
 __pycache__/
 *.blend1
+pcb-core/build/
+pcb-core/*.kicad_prl
+pcb-core/*-backups/
+pcb-core/fp-info-cache

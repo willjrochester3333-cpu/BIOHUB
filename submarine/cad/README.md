@@ -33,11 +33,12 @@ python3.11 make_drawings.py
 | `--blend` | `minnow_auv.blend` |
 | `--render` | `renders/*.png` (Cycles, CPU, about 20 minutes) |
 | `--quick` | low-quality renders for testing |
+| `--core` | show the [Minnow Core](../pcb-core/README.md) all-in-one board instead of the rev 1 board: no separate IMU bracket or reed switch, magnet mark on the hull's port side (use with `--out` to keep the default outputs) |
 
 `make_drawings.py` then writes `drawings/general_arrangement.png/.pdf`, `drawings/end_cap_sections.png`
 and the window cut files `drawings/window_80x8.svg/.dxf`.
 
-If `../pcb/placement.json` and `../pcb/output/board_top.png` exist (the KiCad generator writes them), the main
+If `../pcb/placement.json` and `../pcb/output/board_top.png` (or the `../pcb-core/` ones with `--core`) exist (the KiCad generator writes them), the main
 board in the model is the real board: its texture comes from the Gerber layers and the parts from the placement.
 
 ## Measure these before you print

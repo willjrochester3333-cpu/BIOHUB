@@ -18,6 +18,8 @@ Everything needed to build the regular Minnow design, grouped by the shop you wo
 
 Key: 🏠 = you probably already have it. **P2** = phase 2 (only needed for lake missions; can wait). **Opt** = optional.
 
+> **Building the all-in-one [Minnow Core board](../pcb-core/README.md) instead of the rev 1 board?** Skip Orders 1 and 2 (JLCPCB board and LCSC parts) and these lines: *Microcontroller*, *IMU / compass*, *Hull monitor*, *Magnet switch*, *Camera power socket*, *LoRa radios*, *USB-serial adapter*, *Sub antenna*, *Shore antenna*. Order the two assembled Core boards from JLCPCB instead, and add two 868 MHz U.FL antennas and a small magnet; the [Core README](../pcb-core/README.md#what-you-still-need-to-buy) has the short list with links.
+
 ## Order 1: JLCPCB (the main board) - about £14
 
 Order this first: it takes 1-2 weeks.

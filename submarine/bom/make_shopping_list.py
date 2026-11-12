@@ -132,6 +132,10 @@ BASKETS = [
 
 PHASE = {1: 'Phase 1', 2: 'Phase 2 (LoRa)', 'opt': 'Optional'}
 
+# electronics that the assembled Minnow Core board already has on it
+CORE_SKIPS = ['Microcontroller', 'IMU / compass', 'Hull monitor', 'Magnet switch', 'Camera power socket',
+              'LoRa radios', 'USB-serial adapter', 'Sub antenna', 'Shore antenna']
+
 
 def pcb_query(value, part):
     """Words to search LCSC for one row of the main-board BOM."""
@@ -247,7 +251,11 @@ def main():
          f'| Optional extras (second battery, charger, spare motor, paint, spray) | +£{opt:.0f} |',
          '| Vacuum pump for leak testing (tool, strongly recommended) | +£18 |', '',
          'Key: 🏠 = you probably already have it. **P2** = phase 2 (only needed for lake missions; can wait). '
-         '**Opt** = optional.', '']
+         '**Opt** = optional.', '',
+         '> **Building the all-in-one [Minnow Core board](../pcb-core/README.md) instead of the rev 1 board?** '
+         'Skip Orders 1 and 2 (JLCPCB board and LCSC parts) and these lines: ' + ', '.join(f'*{n}*' for n in CORE_SKIPS) +
+         '. Order the two assembled Core boards from JLCPCB instead, and add two 868 MHz U.FL antennas and a small '
+         'magnet; the [Core README](../pcb-core/README.md#what-you-still-need-to-buy) has the short list with links.', '']
 
     for key, title, blurb in BASKETS:
         L += [f'## {title}', '']

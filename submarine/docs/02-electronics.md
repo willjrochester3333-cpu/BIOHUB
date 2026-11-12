@@ -1,5 +1,21 @@
 # 2. Electronics
 
+There are two ways to build the electronics. Both use the same 150 x 60 mm board outline and mounting holes,
+so the hull, sled and wiring are the same either way.
+
+| | Rev 1 carrier board ([`pcb/`](../pcb)) | Minnow Core, all-in-one ([`pcb-core/`](../pcb-core)) |
+|---|---|---|
+| What arrives | A bare PCB. You solder about 90 parts and plug in an ESP32-S3 DevKit and an E220 radio | Two boards, fully assembled by JLCPCB. Nothing to solder |
+| Cost | About £95 of parts | About £190–205 for two finished boards (the second one is the shore radio) |
+| Electronics you still buy | About 20 separate items | GPS, depth sensor, ESC, motors, battery, camera, two antennas, a magnet, plug-in cables |
+| Best if | You want the cheapest build and like soldering | You want the fewest things to buy and no soldering |
+
+Sections 2.1 to 2.9 describe the rev 1 carrier board. [Section 2.10](#210-the-minnow-core-board) sums up how the
+Core board differs, and [`pcb-core/README.md`](../pcb-core/README.md) has its full guide (ordering, pin map,
+first power-up).
+
+### The rev 1 carrier board
+
 The electronics live on one custom carrier board (the "main board") that the ESP32-S3 dev board and the
 LoRa module plug into. Everything else connects to it with keyed JST connectors, so nothing is held on with
 jumper wires. The board is designed in KiCad and fully routed. The Gerbers are ready to order:
@@ -204,3 +220,26 @@ The KiCad files are generated from [`pcb/design.py`](../pcb/design.py) by
 matches the design table, place parts and check for overlaps, autoroute with Freerouting, run DRC, then write
 the Gerbers, BOM and images. To change something (a pin, a part, a position), edit `design.py` and run
 `python3 generate_board.py all`. You can of course also open the project in KiCad 7 or newer and edit it there.
+
+## 2.10 The Minnow Core board
+
+The Core board does the same jobs as the rev 1 board, with every part soldered by JLCPCB.
+
+![Minnow Core, top](../pcb-core/output/board_top.png)
+
+* **Power:** the same high-side switch idea (two AOD4185 P-MOSFETs, 15 A fuse, 18 V surge clamp). The reed switch
+  is replaced by a Honeywell SM351LT magnet sensor on the port edge of the board, powered all the time by a
+  2.5 µA regulator. Hold a magnet on the left side of the hull, level with the board, 53 mm behind the middle
+  clamp's centre. The ESP32 then holds power on with GPIO32. The board draws about 3 µA when off.
+* **5 V:** a TPS54302 synchronous buck (3 A, 28 V) instead of the LM2596. **3.3 V:** an AMS1117 fed from either
+  the 5 V rail or USB through two diodes, so a USB cable on its own powers the ESP32, sensors and radio but
+  never the battery side.
+* **ESP32:** the classic ESP32-WROOM-32E module (JLCPCB doesn't stock the ESP32-S3 module), with USB-C, a
+  CH340C USB serial chip and automatic reset for uploads. Its antenna points forward, towards the camera.
+* **On-board sensors:** BNO055 compass/IMU (at the front of the board, away from the battery current) and BME280
+  hull monitor.
+* **LoRa:** Ra-01H (SX1276, 868 MHz) with a U.FL antenna socket. A second Core board on USB is the shore station.
+* **Sockets:** side-entry JST-PH for GPS, depth, leak probes, strobe and AUX; JST-SH 8-pin for the ESC
+  cable; USB-A for the camera; XT60 in and XT30 out.
+* Pin map, connector pinouts, cost and the ordering steps: [`pcb-core/README.md`](../pcb-core/README.md).
+

@@ -39,6 +39,9 @@ Put dry tissue paper inside and hold the closed empty hull 0.5 m down in a bath 
 On the bench, with the DevKit and modules **not** plugged in, follow the first power-up steps in the
 [electronics doc](02-electronics.md#28-ordering-and-building-the-board).
 **Pass:** the latch switches on and off, VSYS and 5 V are correct, and nothing gets warm.
+With the **Minnow Core** board there is nothing to plug in first: follow its
+[first power-up steps](../pcb-core/README.md#first-power-up-do-this-before-anything-is-plugged-in) instead
+(current-limited 12 V, magnet on and off, then USB and the bring-up sketch).
 
 ### T4: Sensors and outputs
 DevKit, LoRa and all sensors connected; bring-up firmware running. **Pass:** depth reads about 0 at the surface
