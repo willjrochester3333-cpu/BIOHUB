@@ -200,7 +200,9 @@ details for the core board:
   telemetry packet is unchanged.
 * **Shore station:** the second board, the same firmware with `ROLE_SHORE`: it forwards LoRa packets to the
   USB serial port as JSON, and the laptop script from section 4.9 reads them.
-* **Power latch:** set GPIO32 high in the first line of `setup()`. Read the magnet on GPIO15 (low = magnet).
+* **Power latch:** set GPIO32 high in the first line of `setup()` *if the magnet woke the board* (GPIO15 reads
+  low = magnet). A USB cable on its own also runs the ESP32 with the battery switch off; in that case leave GPIO32
+  low, so plugging in a laptop on the bench doesn't switch the thrusters' power on, unless you ask for it.
 * **ADC:** battery voltage on GPIO36 = VSYS x 22 / 122 (12.6 V reads 2.27 V; use 11 dB attenuation).
 
 ## First power-up (do this before anything is plugged in)
