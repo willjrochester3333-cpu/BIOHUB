@@ -8,6 +8,8 @@ Steps (each can be run on its own):
   verify_sch  export the netlist from the schematic and compare it with design.py
   check       courtyard overlap / board-edge check of the placement
   route       pre-route the high-current copper, autoroute the rest with Freerouting
+  widen       put necked-down supply tracks back to their class width
+  stitch      ground stitching vias between the two ground pours
   drc         KiCad design-rule check
   outputs     Gerbers + drill (zip), JLCPCB assembly BOM + placement (CPL) files,
               schematic PDF/PNG, layout PDF, board images, placement.json
@@ -876,6 +878,27 @@ def step_route(passes=60):
         print('   ', ln.strip()[:200])
 
 
+def step_widen():
+    """Freerouting necks tracks down to squeeze through gaps; put the supply nets back to their
+    class width (the DRC step afterwards confirms everything still fits)."""
+    import pcbnew
+    path = os.path.join(HERE, f'{PROJECT}.kicad_pcb')
+    board = pcbnew.LoadBoard(path)
+    # only the 'Supply' class: the 2-3 mm battery path is pre-routed, and its thin
+    # branches to small resistors and capacitors are meant to stay thin
+    want = {n: DZ.NETCLASSES['Supply']['width'] for n in DZ.NETCLASSES['Supply']['nets']}
+    n = 0
+    for t in board.GetTracks():
+        if t.GetClass() != 'PCB_VIA' and t.GetNetname() in want and \
+                pcbnew.ToMM(t.GetWidth()) < want[t.GetNetname()] - 0.01:
+            t.SetWidth(pcbnew.FromMM(want[t.GetNetname()]))
+            n += 1
+    board.BuildConnectivity()
+    pcbnew.ZONE_FILLER(board).Fill(board.Zones())
+    board.Save(path)
+    print(f'[widen] {n} supply track segments set back to their class width')
+
+
 def step_stitch(pitch=4.0, via_d=0.7, via_drill=0.35):
     """Ground stitching vias in open areas, so the top and bottom ground pours are tied together
     and small bottom-layer islands stay connected (better return paths and shielding)."""
@@ -1135,6 +1158,6 @@ def step_outputs():
 if __name__ == '__main__':
     steps = sys.argv[1:] or ['all']
     if 'all' in steps:
-        steps = ['sch', 'verify_sch', 'check', 'route', 'stitch', 'drc', 'outputs']
+        steps = ['sch', 'verify_sch', 'check', 'route', 'widen', 'stitch', 'drc', 'outputs']
     for s in steps:
         globals()[f'step_{s}']()

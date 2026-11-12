@@ -12,6 +12,8 @@ and it talks to the sub over LoRa. You don't need any other radio, USB adapter o
 |---|---|
 | ![top](output/board_top.png) | ![bottom](output/board_bottom.png) |
 
+![The Core board on the sled inside the hull (Blender model, `build_sub.py --core`)](output/in_the_hull.png)
+
 It has the same outline (150 x 60 mm) and mounting holes as the rev 1 carrier board in [`../pcb`](../pcb), so it
 fits the same sled in the hull, and the mechanical design does not change. Two small differences: the magnet mark
 moves to the side of the hull (see below), and because the board is lighter than the rev 1 board with its DevKit,
@@ -257,7 +259,7 @@ need Python with `cairosvg` and `Pillow`.
 FREEROUTING_JAR=/path/to/freerouting-2.5.0-executable.jar python3 generate_board.py all
 ```
 
-Steps, which can also be run one at a time: `sch verify_sch check route drc outputs`.
+Steps, which can also be run one at a time: `sch verify_sch check route widen stitch drc outputs`.
 
 ## Things to know
 
