@@ -162,8 +162,9 @@ the ESP32.
 | Camera, antennas, laptop | USB-A, U.FL and USB-C plugs | — |
 
 Tools: a ratchet crimper for insulated terminals, a wire stripper, a heat gun (or a lighter) and a small
-screwdriver. The 3D-printed parts use heat-set inserts, which are pushed in with a hot tip (a heat-set insert
-tool); that is not soldering and uses no solder.
+screwdriver. The 3D-printed parts need no heat-set inserts either: screws cut their own thread, and the nose ring
+and tail cone use glued studs and nuts (see [the mechanical guide](../docs/01-mechanical.md#16-frame-fairings-and-fasteners)),
+so no soldering iron or hot tip is used anywhere in the build.
 
 ## Switching it on and off: the magnet
 

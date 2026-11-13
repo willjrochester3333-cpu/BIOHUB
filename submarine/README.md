@@ -87,16 +87,16 @@ The full itemised list is [`bom/bom.csv`](bom/bom.csv); the summary is [`bom/bom
 
 | | Cost |
 |---|---:|
-| Phase 1: pool-ready autonomous sub with the 4K camera | £306 |
+| Phase 1: pool-ready autonomous sub with the 4K camera | £303 |
 | Phase 2: LoRa telemetry for lake missions | £24 |
-| **Everything, bought from scratch** | **£330** |
-| Of which most makers already own (filament, screws, glue, wire, SD card...) | £72 |
-| **Everything, if you have the usual workshop supplies** | **£258** |
+| **Everything, bought from scratch** | **£327** |
+| Of which most makers already own (filament, screws, glue, wire, SD card...) | £66 |
+| **Everything, if you have the usual workshop supplies** | **£261** |
 
 **No soldering at all?** Build it with the [Minnow Core board](pcb-core/README.md), which JLCPCB assembles
 completely, plus screw terminals, lever connectors and crimp splices for the wiring: see the
-[solder-free shopping list](bom/shopping_list.md). It costs about **£477** from scratch (**£415** with the usual
-supplies), mainly because the two assembled boards cost about £198. The rev 1 list above is
+[solder-free shopping list](bom/shopping_list.md). Nothing in it needs a soldering iron or any hot tool. It
+costs about **£474** from scratch (**£418** with the usual supplies), mainly because the two assembled boards cost about £198. The rev 1 list above is
 [`bom/shopping_list_rev1.md`](bom/shopping_list_rev1.md).
 
 Prices are rough UK prices (late 2026). The biggest single items are the used GoPro (£50), the ESP32 and

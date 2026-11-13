@@ -10,11 +10,11 @@ Everything needed to build the rev 1 Minnow design, grouped by the shop you woul
 
 | | Cost |
 |---|---:|
-| Phase 1: pool-ready sub with the 4K camera | £306 |
+| Phase 1: pool-ready sub with the 4K camera | £303 |
 | Phase 2: LoRa telemetry for lake missions | £24 |
-| **Everything, from scratch** | **£330** |
-| Items marked 🏠 that most makers already own | -£72 |
-| **Everything, if you have the usual supplies** | **£258** |
+| **Everything, from scratch** | **£327** |
+| Items marked 🏠 that most makers already own | -£66 |
+| **Everything, if you have the usual supplies** | **£261** |
 | Optional extras (second battery, charger, spare motor, paint, spray) | +£46 |
 | Vacuum pump for leak testing (tool, strongly recommended) | +£18 |
 
@@ -127,17 +127,16 @@ Skip anything you already have (marked 🏠).
 | ☐ | 1 | **Sled rods**<br>Aluminium round tube 6 mm OD, 1 m (cut two at 312 mm) |  | 3 | [Amazon UK](https://www.amazon.co.uk/s?k=aluminium+round+tube+6mm+1m) · [eBay UK](https://www.ebay.co.uk/sch/i.html?_nkw=aluminium+round+tube+6mm+1m) |  |
 | ☐ | 12 | **M4 bolts** 🏠<br>A2 stainless M4 x 30 socket cap + nyloc nut + 2 washers |  | 3 | [Amazon UK](https://www.amazon.co.uk/s?k=M4+stainless+socket+cap+screw+assortment+nyloc) · [Amazon UK](https://www.amazon.co.uk/s?k=M4+x+30+stainless+socket+cap) | A2 stainless. You need 12 x M4x30 with nyloc nuts and washers. |
 | ☐ | 10 | **M4 countersunk screws** 🏠<br>A2 stainless M4 x 12 countersunk |  | 2 | [Amazon UK](https://www.amazon.co.uk/s?k=M4+x+12+countersunk+stainless) |  |
-| ☐ | 8 | **M3 screws** 🏠<br>A2 stainless M3 x 20 socket cap |  | 1 | [Amazon UK](https://www.amazon.co.uk/s?k=M3+stainless+socket+cap+screw+assortment) · [Amazon UK](https://www.amazon.co.uk/s?k=M3+x+20+stainless+socket+cap) | An M3 assortment box (6-20 mm) covers this line and the next. |
-| ☐ | 30 | **M3 short screws** 🏠<br>A2 stainless M3 x 6 / x 8 (motors, mast, PCB, ESC, sled) |  | 2 | [Amazon UK](https://www.amazon.co.uk/s?k=M3+x+8+stainless+socket+cap) | M3 x 6 and M3 x 8. |
-| ☐ | 1 | **Heat-set inserts** 🏠<br>Brass heat-set inserts M3 (x13) and M4 (x10), pack of each |  | 5 | [Amazon UK](https://www.amazon.co.uk/s?k=heat+set+inserts+M3+M4+brass) | For 3D prints (knurled brass). |
-| ☐ | 3 | **Standoffs** 🏠<br>Brass M3 x 20 hex standoffs (rear cap bosses to sled plate) |  | 1 | [Amazon UK](https://www.amazon.co.uk/s?k=M3+x+20+brass+hex+standoff) |  |
+| ☐ | 1 | **M3 studs**<br>A2 stainless M3 threaded rod, 300 mm (cut into 8 studs of 26 mm with a hacksaw) + 8 M3 nuts + 8 washers |  | 3 | [Amazon UK](https://www.amazon.co.uk/s?k=M3+threaded+rod+stainless+300mm) · [Amazon UK](https://www.amazon.co.uk/s?k=M3+nuts+washers+stainless+assortment) | A2 stainless. Cut with a hacksaw; file the ends so the nuts start easily. |
+| ☐ | 30 | **M3 short screws** 🏠<br>A2 stainless M3 x 6 / x 8 / x 10 (motors, mast, PCB, ESC, sled) |  | 2 | [Amazon UK](https://www.amazon.co.uk/s?k=M3+stainless+socket+cap+screw+assortment) | An M3 assortment box (6-20 mm) covers these. |
+| ☐ | 3 | **Standoffs** 🏠<br>Brass M3 x 20 hex standoffs, male-female (rear cap bosses to sled plate) |  | 1 | [Amazon UK](https://www.amazon.co.uk/s?k=M3+x+20+brass+hex+standoff+male+female) | Male-female: one threaded pin end. |
 | ☐ | 1 | **Ballast**<br>Lead shot (fishing / reloading), 1 kg |  | 8 | [Amazon UK](https://www.amazon.co.uk/s?k=lead+shot+fishing+1kg) · [eBay UK](https://www.ebay.co.uk/sch/i.html?_nkw=lead+shot+1kg) | Lead, not steel shot. |
 | ☐ | 1 | **Straps, ties, foam** 🏠<br>Velcro battery straps, small zip ties, 3 mm black EVA foam sheet |  | 4 | [Amazon UK](https://www.amazon.co.uk/s?k=velcro+battery+strap) · [Amazon UK](https://www.amazon.co.uk/s?k=black+EVA+foam+sheet+3mm) |  |
 | ☐ | 1 | **Thruster cable**<br>3-core 0.5 mm2 round flexible cable (about 5.5 mm OD), 3 m |  | 4 | [Amazon UK](https://www.amazon.co.uk/s?k=3+core+0.5mm+round+flex+cable) · [eBay UK](https://www.ebay.co.uk/sch/i.html?_nkw=3+core+0.5mm+round+flex+cable) | Round, about 5.5 mm across, so the glands seal on it. |
 | ☐ | 1 | **Heat-shrink** 🏠<br>Adhesive-lined (marine) heat-shrink assortment |  | 3 | [Amazon UK](https://www.amazon.co.uk/s?k=adhesive+lined+heat+shrink+assortment) | Adhesive-lined (glue inside). |
 | ☐ | 1 | **Corrosion inhibitor** 🏠<br>ACF-50 / Corrosion-X / silicone spray | Opt | 6 | [Amazon UK](https://www.amazon.co.uk/s?k=ACF-50) · [Amazon UK](https://www.amazon.co.uk/s?k=Corrosion-X) |  |
 
-Subtotal (without optional items): about **£92**.
+Subtotal (without optional items): about **£89**.
 
 ## Order 5: eBay UK - the two things Amazon is bad for
 
@@ -156,7 +155,6 @@ Subtotal (without optional items): about **£60**.
 |---|---|---|---|
 | ☐ | **Hand vacuum pump with gauge** (brake-bleeder type), for the leak test before every dive | about £18 | [Amazon UK](https://www.amazon.co.uk/s?k=hand+vacuum+pump+brake+bleeder+gauge) · [eBay UK](https://www.ebay.co.uk/sch/i.html?_nkw=brake+bleeder+vacuum+pump) |
 | ☐ | Hacksaw + mitre box (or a plastic pipe cutter) and a deburring tool | about £10 if needed | [Amazon UK](https://www.amazon.co.uk/s?k=plastic+pipe+cutter) · [Amazon UK](https://www.amazon.co.uk/s?k=deburring+tool) |
-| ☐ | Heat-set insert tip for the soldering iron (M3/M4) | about £5 if needed | [Amazon UK](https://www.amazon.co.uk/s?k=heat+set+insert+tip+soldering+iron) |
 | | 3D printer that prints PETG (bed 220 x 220 mm is enough) | assumed | |
 | | Soldering iron, solder, flux, multimeter | assumed | |
 | | Drill + 4.2 mm and 3.2 mm bits | assumed | |

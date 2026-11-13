@@ -65,6 +65,10 @@ P = dict(
     boss_r=36.0, boss_d=7.0, boss_len=8.0,   # sled mounting bosses (M3 inserts)
     # --- Frame -----------------------------------------------------------------
     clamp_w=16.0, clamp_wall=8.0, clamp_gap=1.0,
+    # 'cold': no heat-set inserts, nothing needs a hot tool. Screws that are rarely undone cut their own
+    # thread in a pilot hole; the nose ring and tail cone (removed to open the hull) use M3 studs glued into
+    # their flange with nuts on the clamp side. 'inserts': brass heat-set inserts instead.
+    fasteners='cold',
     clamp_front_x=143.0, clamp_mid_x=0.0, clamp_rear_x=-143.0,
     ear_out=62.0, ear_h=8.0,
     keel_w=25.0, keel_t=3.0, keel_x0=-170.0, keel_x1=200.0,
@@ -121,6 +125,15 @@ def derived(p):
 
 
 D = derived(P)
+
+
+def m3_hole_r():
+    """Hole for an M3 thread in PETG: heat-set insert, or a pilot the screw taps itself."""
+    return 2.0 if P['fasteners'] == 'inserts' else 1.3
+
+
+def m4_hole_r():
+    return 2.8 if P['fasteners'] == 'inserts' else 1.7
 
 # Which electronics board the model shows: 'carrier' = rev 1 (../pcb, reed switch on the hull top,
 # separate IMU breakout), 'core' = Minnow Core (../pcb-core, everything on the board, magnet
@@ -431,9 +444,9 @@ def build_rear_cap():
     for name, a, dia in rear_penetrators():
         y, z = (0.0, 0.0) if a is None else (P['gland_ring_r'] * sin(a), P['gland_ring_r'] * cos(a))
         bm_cyl(bm, (xb - 2, y, z), (xr + 1, y, z), dia / 2, 40)
-    for a in rear_boss_angles():   # M3 heat-set insert holes in the bosses
+    for a in rear_boss_angles():   # M3 holes in the bosses (insert, or pilot for the standoff thread)
         y, z = P['boss_r'] * sin(a), P['boss_r'] * cos(a)
-        bm_cyl(bm, (xr + 1.5, y, z), (xr + P['boss_len'] + 1, y, z), 2.0, 24)
+        bm_cyl(bm, (xr + 1.5, y, z), (xr + P['boss_len'] + 1, y, z), m3_hole_r(), 24)
     boolean(ob, bm, 'DIFFERENCE')
     shade(ob)
     return ob
@@ -498,22 +511,24 @@ def build_clamp(kind):
         for dx in (-4.5, 4.5):
             bolt_y = 56.0 if kind != 'front' else ro_p + 9.5
             bm_cyl(bm2, (xc + dx, s * bolt_y, -eh - 2), (xc + dx, s * bolt_y, eh + 2), 2.2, 24)
-    for dy in (-7, 7):  # keel inserts M4 (from below)
-        bm_cyl(bm2, (xc, dy, -(ro_p + 12)), (xc, dy, -(ro_p + 3)), 2.8, 24)
+    for dy in (-7, 7):  # keel screws M4 (from below)
+        bm_cyl(bm2, (xc, dy, -(ro_p + 12)), (xc, dy, -(ro_p + 3)), m4_hole_r(), 24)
     if kind == 'mid':
-        for dx in (-4.5, 4.5):  # mast inserts M3
-            bm_cyl(bm2, (xc + dx, 0, ro_p + 12), (xc + dx, 0, ro_p + 4), 2.0, 24)
+        for dx in (-4.5, 4.5):  # mast screws M3
+            bm_cyl(bm2, (xc + dx, 0, ro_p + 12), (xc + dx, 0, ro_p + 4), m3_hole_r(), 24)
     if kind in ('front', 'rear'):
-        # 4 x M3x20 screws pass THROUGH the clamp into heat-set inserts in the
-        # nose ring / tail cone flange. Heads sit in counterbores on the side
-        # that faces the middle of the hull, so they stay reachable.
+        # 4 x M3 pass THROUGH the clamp to the nose ring / tail cone flange: screws into heat-set
+        # inserts ('inserts', heads in counterbores), or studs glued into the flange with a washer
+        # and nut on the flat face ('cold'). Either way the screw heads / nuts sit on the side that
+        # faces the middle of the hull, so they stay reachable.
         head_face = x0 if kind == 'front' else x1
         sgn = 1 if kind == 'front' else -1
         for k in range(4):
             a = pi / 4 + k * pi / 2
             y, z = 49.0 * sin(a), 49.0 * cos(a)
             bm_cyl(bm2, (x0 - 1, y, z), (x1 + 1, y, z), 1.7, 20)
-            bm_cyl(bm2, (head_face - sgn * 1, y, z), (head_face + sgn * 3.5, y, z), 3.1, 20)
+            if P['fasteners'] == 'inserts':
+                bm_cyl(bm2, (head_face - sgn * 1, y, z), (head_face + sgn * 3.5, y, z), 3.1, 20)
     boolean(ob, bm2, 'DIFFERENCE')
     halves = []
     for name, z0, z1 in (('upper', P['clamp_gap'] / 2, 200), ('lower', -200, -P['clamp_gap'] / 2)):
@@ -585,9 +600,9 @@ def build_pod(name, xc, z_top):
     bm = bmesh.new()
     bm_box(bm, xc - L / 2 + t + 12, xc + L / 2 - t - 12, -W / 2 + t, W / 2 - t, z_top - H + 3, z_top + 1)
     boolean(ob, bm, 'DIFFERENCE')
-    bm = bmesh.new()  # end blocks with M4 inserts at +-50 mm (on the 20 mm keel grid)
+    bm = bmesh.new()  # end blocks with M4 holes at +-50 mm (on the 20 mm keel grid)
     for dx in (-50, 50):
-        bm_cyl(bm, (xc + dx, 0, z_top - 12), (xc + dx, 0, z_top + 1), 2.8, 24)
+        bm_cyl(bm, (xc + dx, 0, z_top - 12), (xc + dx, 0, z_top + 1), m4_hole_r(), 24)
     boolean(ob, bm, 'DIFFERENCE')
     # bevel-ish look
     shade(ob, None)
@@ -808,16 +823,28 @@ def build_nose_ring():
             (xf, D['rw'] + 0.8), (xf, ri), (xcl + fl, ri), (xcl + fl, 46.0)]
     ob = mkobj('NoseRing', rev_bm(prof, 160), 'Fairings', MAT['petg_dark'],
                dict(kind='wet', material='petg', fill=1.0, print=True, print_dir=(-1, 0, 0),
-                    note='Lip down. Retains the window and the front cap. 4 x M3 heat-set inserts '
-                         'in the flange; screws come through the front clamp from behind.'))
+                    note='Lip down. Retains the window and the front cap. ' + flange_note('front')))
     bm = bmesh.new()
     for k in range(4):
         a = pi / 4 + k * pi / 2
         y, z = 49.0 * sin(a), 49.0 * cos(a)
-        bm_cyl(bm, (xcl - 1, y, z), (xcl + fl + 0.5, y, z), 2.0, 16)
+        bm_cyl(bm, (xcl - 1, y, z), (xcl + fl + 0.5, y, z), flange_hole_r(), 16)
     boolean(ob, bm, 'DIFFERENCE')
     shade(ob)
     return ob
+
+
+def flange_hole_r():
+    """Nose ring / tail cone flange: heat-set insert hole, or a 3.2 mm hole for a glued M3 stud."""
+    return 2.0 if P['fasteners'] == 'inserts' else 1.6
+
+
+def flange_note(end):
+    clamp = 'front' if end == 'front' else 'rear'
+    if P['fasteners'] == 'inserts':
+        return f'4 x M3 heat-set inserts in the flange; M3 x 20 screws come through the {clamp} clamp.'
+    return (f'Glue 4 M3 studs (26 mm of threaded rod) into the flange holes with 5-minute epoxy, flush with the '
+            f'far face; they pass through the {clamp} clamp and take a washer and nut on its other side.')
 
 
 def build_tail_cone():
@@ -848,8 +875,8 @@ def build_tail_cone():
              (xb + ch, ri), (xcl - fl, ri), (xcl - fl, 46.0)]
     ob = mkobj('TailCone', rev_bm(prof, 160), 'Fairings', MAT['petg_dark'],
                dict(kind='wet', material='petg', fill=1.0, print=True, print_dir=(-1, 0, 0),
-                    note='Flange down. Seats on the rear-cap chamfer and holds the rear cap on. '
-                         '4 x M3 heat-set inserts in the flange.'))
+                    note='Flange down. Seats on the rear-cap chamfer and holds the rear cap on. ' +
+                         flange_note('rear')))
     bm = bmesh.new()
     for k in range(4):     # 4 open-ended cable slots (top, port, bottom, stbd)
         a = k * pi / 2
@@ -857,10 +884,10 @@ def build_tail_cone():
         bm_box(s, xb - 22, xcl + 2, -6.5, 6.5, 30, 70)
         bm_transform(s, Matrix.Rotation(-a, 4, 'X'))
         _merge(bm, s)
-    for k in range(4):     # heat-set insert holes
+    for k in range(4):     # flange holes: heat-set inserts, or the glued M3 studs
         a = pi / 4 + k * pi / 2
         y, z = 49.0 * sin(a), 49.0 * cos(a)
-        bm_cyl(bm, (xcl + 1, y, z), (xcl - fl - 0.5, y, z), 2.0, 16)
+        bm_cyl(bm, (xcl + 1, y, z), (xcl - fl - 0.5, y, z), flange_hole_r(), 16)
     boolean(ob, bm, 'DIFFERENCE')
     shade(ob)
     return ob

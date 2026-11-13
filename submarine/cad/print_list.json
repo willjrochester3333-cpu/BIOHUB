@@ -13,7 +13,7 @@
  {
   "file": "BallastPod_front.stl",
   "qty": 2,
-  "grams_each": 67.0,
+  "grams_each": 67.5,
   "bbox_mm": [
    120.0,
    34.0,
@@ -24,7 +24,7 @@
  {
   "file": "Clamp_front_lower.stl",
   "qty": 1,
-  "grams_each": 28.1,
+  "grams_each": 28.6,
   "bbox_mm": [
    55.5,
    124.0,
@@ -35,7 +35,7 @@
  {
   "file": "Clamp_front_upper.stl",
   "qty": 1,
-  "grams_each": 26.8,
+  "grams_each": 26.9,
   "bbox_mm": [
    52.5,
    124.0,
@@ -46,7 +46,7 @@
  {
   "file": "Clamp_mid_lower.stl",
   "qty": 1,
-  "grams_each": 28.6,
+  "grams_each": 29.0,
   "bbox_mm": [
    55.5,
    124.0,
@@ -57,7 +57,7 @@
  {
   "file": "Clamp_mid_upper.stl",
   "qty": 1,
-  "grams_each": 28.4,
+  "grams_each": 28.6,
   "bbox_mm": [
    55.5,
    124.0,
@@ -68,7 +68,7 @@
  {
   "file": "Clamp_rear_lower.stl",
   "qty": 1,
-  "grams_each": 28.1,
+  "grams_each": 28.6,
   "bbox_mm": [
    55.5,
    124.0,
@@ -79,7 +79,7 @@
  {
   "file": "Clamp_rear_upper.stl",
   "qty": 1,
-  "grams_each": 26.8,
+  "grams_each": 26.9,
   "bbox_mm": [
    52.5,
    124.0,
@@ -145,13 +145,13 @@
  {
   "file": "NoseRing.stl",
   "qty": 1,
-  "grams_each": 69.9,
+  "grams_each": 70.0,
   "bbox_mm": [
    107.0,
    107.0,
    56.0
   ],
-  "note": "Lip down. Retains the window and the front cap. 4 x M3 heat-set inserts in the flange; screws come through the front clamp from behind."
+  "note": "Lip down. Retains the window and the front cap. Glue 4 M3 studs (26 mm of threaded rod) into the flange holes with 5-minute epoxy, flush with the far face; they pass through the front clamp and take a washer and nut on its other side."
  },
  {
   "file": "Prop_H_port_CW.stl",
@@ -178,7 +178,7 @@
  {
   "file": "RearCap.stl",
   "qty": 1,
-  "grams_each": 133.5,
+  "grams_each": 133.7,
   "bbox_mm": [
    101.6,
    101.6,
@@ -277,12 +277,12 @@
  {
   "file": "TailCone.stl",
   "qty": 1,
-  "grams_each": 109.9,
+  "grams_each": 110.0,
   "bbox_mm": [
    107.3,
    107.3,
    109.0
   ],
-  "note": "Flange down. Seats on the rear-cap chamfer and holds the rear cap on. 4 x M3 heat-set inserts in the flange."
+  "note": "Flange down. Seats on the rear-cap chamfer and holds the rear cap on. Glue 4 M3 studs (26 mm of threaded rod) into the flange holes with 5-minute epoxy, flush with the far face; they pass through the rear clamp and take a washer and nut on its other side."
  }
 ]

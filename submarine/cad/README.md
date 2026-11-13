@@ -53,6 +53,7 @@ board in the model is the real board: its texture comes from the Gerber layers a
 | `cam_w`, `cam_h`, `cam_d`, `cam_lens_y`, `cam_lens_z`, `cam_bump` | GoPro HERO5–7 | Your camera's body and lens position |
 | `batt_*` | 65 x 56 x 19, 2 packs | Your battery packs |
 | `reserve_buoyancy_g` | 45 | How strongly it floats when off |
+| `fasteners` | `'cold'` | `'cold'`: no heat-set inserts, so no hot tool is needed (pilot holes for self-tapping screws, glued M3 studs on the nose ring and tail cone). `'inserts'`: brass heat-set inserts |
 
 After a change, run the script again: the parts, renders and the trim report (lead needed and where) all update.
 

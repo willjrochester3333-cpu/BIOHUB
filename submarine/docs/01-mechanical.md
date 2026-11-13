@@ -107,7 +107,8 @@ Fitting the glands: the printed holes are 10.5 mm, the tap-drill size for M12 x 
 M12 x 1.5 hand tap, then screw each gland in with a smear of silicone on the thread and its own washer
 against the flat outer face. Pass the cable through, tighten the dome nut, and for extra security run a
 little epoxy into the back of the gland once everything works. Three bosses on the inside face of the
-rear cap (M3 heat-set inserts) carry the internal sled. They are blind holes and do not go through the cap.
+rear cap carry the internal sled: the male ends of three M3 brass standoffs cut their own thread in their 2.6 mm
+holes. They are blind holes and do not go through the cap.
 
 ![Rear cap section](../cad/renders/06_rear_cap_section.png)
 
@@ -116,15 +117,19 @@ rear cap (M3 heat-set inserts) carry the internal sled. They are blind holes and
 | Part | Material | Fixing |
 |---|---|---|
 | Clamp rings (front, mid, rear) | PETG, solid, printed on their side | Split in two; the M4 bolts through the side ears pinch them onto the hull and also hold the thrusters |
-| Keel bar | Aluminium flat 25 x 3 mm, 370 mm long, 4.5 mm holes every 20 mm | 6 x M4 x 12 countersunk into M4 inserts under the clamps |
-| Ballast pods (2) | PETG | Open side up against the keel bar; 2 x M4 x 12 each into M4 inserts. Pod centres sit 10 mm off the hole grid so both bolts land on holes |
-| Nose ring | PETG, solid | 4 x M3 x 20 through the front clamp into inserts in the nose ring flange |
-| Tail cone | PETG, 1.8 mm wall | 4 x M3 x 20 through the rear clamp into its flange; four open slots let it slide off over the cables |
-| Mast | Clear/natural PETG, hollow, potted | 2 x M3 into the mid-clamp top pad |
+| Keel bar | Aluminium flat 25 x 3 mm, 370 mm long, 4.5 mm holes every 20 mm | 6 x M4 x 12 countersunk into 3.4 mm pilot holes under the clamps (the screws cut their own thread) |
+| Ballast pods (2) | PETG | Open side up against the keel bar; 2 x M4 x 12 each into 3.4 mm pilot holes. Pod centres sit 10 mm off the hole grid so both bolts land on holes |
+| Nose ring | PETG, solid | 4 M3 studs (26 mm of threaded rod) glued into its flange with 5-minute epoxy; they pass through the front clamp and take a washer and nut |
+| Tail cone | PETG, 1.8 mm wall | 4 glued M3 studs through the rear clamp, washers and nuts on the clamp's front face (undo 4 nuts to open the hull); four open slots let it slide off over the cables |
+| Mast | Clear/natural PETG, hollow, potted | 2 x M3 x 10 into 2.6 mm pilot holes in the mid-clamp top pad |
 
-Fastener and insert count: 12 x M4 x 30 with nyloc nuts and washers, 10 x M4 x 12 countersunk, 8 x M3 x 20,
-about 30 x M3 x 6–8, 3 x M3 x 20 brass standoffs, 13 x M3 and 10 x M4 brass heat-set inserts. Use A2 stainless
-throughout: it doesn't rust and is barely magnetic, which matters for the compass.
+Fastener count: 12 x M4 x 30 with nyloc nuts and washers, 10 x M4 x 12 countersunk, 8 M3 studs (26 mm of M3
+threaded rod) with 8 nuts and washers, about 30 x M3 x 6–10, 3 x M3 x 20 brass standoffs (male-female). There are
+**no heat-set inserts**: screws that are rarely undone cut their own thread in pilot holes (2.6 mm for M3,
+3.4 mm for M4), and the two parts you take off to open the hull use glued studs and nuts, so no soldering iron or
+other hot tool is needed. Drive the self-tapping screws in slowly by hand the first time. Use A2 stainless
+throughout: it doesn't rust and is barely magnetic, which matters for the compass. (Prefer heat-set inserts?
+Set `fasteners='inserts'` in `cad/build_sub.py` and rebuild the STLs.)
 
 ## 1.7 Thrusters
 
@@ -204,8 +209,8 @@ Printing the caps, clamps, ducts and fairings solid matters: water slowly gets i
 | `00_Oring_fit_test.stl` | 1 | 30 | 102 x 102 x 16 | **Print first.** One groove; check the O-ring fit on your pipe |
 | `FrontCap.stl` | 1 | 121 | 102 x 102 x 46 | Pressure part. 100 % infill, 0.12–0.16 mm layers, window face down, epoxy-coat outside |
 | `RearCap.stl` | 1 | 134 | 102 x 102 x 40 | Pressure part. As above; tap the 7 ring holes M12 x 1.5 |
-| `NoseRing.stl` | 1 | 70 | 107 x 107 x 56 | Lip down; M3 inserts in the flange |
-| `TailCone.stl` | 1 | 110 | 107 x 107 x 109 | Flange down; M3 inserts in the flange |
+| `NoseRing.stl` | 1 | 70 | 107 x 107 x 56 | Lip down; glue the 4 M3 studs into the flange |
+| `TailCone.stl` | 1 | 110 | 107 x 107 x 109 | Flange down; glue the 4 M3 studs into the flange |
 | `Clamp_front_upper/lower.stl` | 1 each | 27 / 28 | 124 x 56 x 16 | On their side, solid |
 | `Clamp_mid_upper/lower.stl` | 1 each | 28 / 29 | 124 x 56 x 16 | On their side, solid; mast pad on the upper half |
 | `Clamp_rear_upper/lower.stl` | 1 each | 27 / 28 | 124 x 56 x 16 | On their side, solid |
@@ -226,10 +231,13 @@ Printing the caps, clamps, ducts and fairings solid matters: water slowly gets i
 
 1. Print the fit test, check the O-ring fit, adjust if needed.
 2. Print and epoxy-coat the caps. Fit the window into the front cap with sealant and let it cure for 24 hours.
-3. Tap the rear cap, fit the glands, the depth sensor and the vent tube. Melt the M3 inserts into the bosses.
-4. Melt all the heat-set inserts into the clamps, pods, nose ring, tail cone and mast pad.
-5. Cut and chamfer the pipe. Fit the front cap (greased O-rings), then the front clamp, then the nose ring.
+3. Tap the rear cap, fit the glands, the depth sensor and the vent tube. Screw the three standoffs into the bosses.
+4. Cut 8 M3 studs of 26 mm from the threaded rod and epoxy 4 into the nose ring flange and 4 into the tail cone
+   flange, flush with the face that touches the cap. Let the epoxy set.
+5. Cut and chamfer the pipe. Fit the front cap (greased O-rings) and the front clamp loosely, slide the nose ring
+   on so its studs pass through the clamp, then fit washers and nuts.
 6. Fit the mid and rear clamps loosely, then the keel bar, then tighten the clamps with the keel bar straight.
-7. Build the sled outside the hull, then slide it in and fit the rear cap and the tail cone.
+7. Build the sled outside the hull, then slide it in and fit the rear cap and the tail cone (studs through the
+   rear clamp, then washers and nuts). To open the hull later: undo those 4 nuts and slide the tail cone off.
 8. Bolt on the thrusters and the mast, route and tie the cables.
 9. Vacuum test (see the test plan) before anything goes near water.
