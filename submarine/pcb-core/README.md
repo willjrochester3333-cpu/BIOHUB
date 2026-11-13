@@ -2,8 +2,12 @@
 
 This is the "buy almost nothing" version of the Minnow electronics. JLCPCB solders **every part** for you:
 the ESP32, the USB programming port, the magnet on/off switch, the 5 V and 3.3 V supplies, the compass, the
-hull leak/pressure sensor, the LoRa radio and all the connectors. You plug things into it; there is nothing
-to solder on the board.
+hull leak/pressure sensor, the LoRa radio and all the connectors. There is nothing to solder on the board.
+
+**The whole sub can be built without soldering.** Everything connects to the board with plugs (battery, camera,
+antenna, USB) or **screw terminals** (strip a wire, push it in, tighten the screw), and the few wire-to-wire joins
+use lever connectors and heat-shrink crimp splices. See [Building it without soldering](#building-it-without-soldering)
+and the [solder-free shopping list](../bom/shopping_list.md).
 
 **Order two.** One goes in the sub. The other is your **shore radio**: plug it into a laptop with a USB-C cable
 and it talks to the sub over LoRa. You don't need any other radio, USB adapter or base station.
@@ -32,15 +36,15 @@ Blender model with `python3.11 build_sub.py --core` to see it and get the exact 
 | On/off | Honeywell SM351LT magnet sensor at the board edge + always-on 3 uA supply: hold a magnet on the hull | reed switch on a lead |
 | Power | 15 A fuse, two 40 A P-MOSFET switch, 18 V surge clamp, 5 V / 3 A buck (TPS54302), 3.3 V LDO | same idea, through-hole parts |
 | Camera power | USB-A socket for the GoPro's own cable, switched by the ESP32, 1.5 A resettable fuse | USB-A breakout on a lead |
-| Thrusters | JST-SH 8-pin socket for the 4-in-1 ESC's DShot cable, 1 kΩ protection on every signal | JST-PH 7-pin |
+| Thrusters | Screw terminals for the signal wires of four single ESCs (DShot), 1 kΩ protection on every signal | JST-PH 7-pin to a 4-in-1 ESC |
 | Outputs | Strobe and spare (lights / pump) low-side switches, up to 3 A each | same |
-| Sockets | GPS, depth sensor, 2 leak probes (JST-PH, side entry), XT60 battery in, XT30 to the ESC | same |
+| Wiring | Screw terminals for the GPS, depth sensor, 2 leak probes, strobe and AUX (each screw labelled on the board); XT60 battery in, XT30 out to the ESCs | JST sockets |
 
 ```mermaid
 flowchart LR
     BAT[3S battery XT60] --> F[15 A fuse] --> SW[2 x P-MOSFET switch]
     MAG((magnet)) -.-> HALL[SM351LT magnet sensor<br/>always on, 3 uA] --> SW
-    SW --> ESCP[XT30 to the ESC]
+    SW --> ESCP[XT30 to the ESCs]
     SW --> BUCK[5 V / 3 A buck] --> LDO[3.3 V LDO]
     USB[USB-C] --> CH[CH340C] <--> MCU
     USB --> LDO
@@ -49,7 +53,7 @@ flowchart LR
     MCU -- I2C --> IMU[BNO055 compass] & BME[BME280 hull] & DEP[depth socket]
     MCU -- SPI --> LORA[Ra-01H LoRa] --> ANT[U.FL antenna]
     MCU -- UART --> GPS[GPS socket]
-    MCU -- DShot x4 --> ESCS[ESC signal socket]
+    MCU -- DShot x4 --> ESCS[ESC signal screw terminals]
     MCU --> CAM[camera USB-A 5 V] & OUT[strobe / AUX outputs]
     MCU -. Wi-Fi .-> GOPRO[GoPro]
 ```
@@ -63,18 +67,19 @@ battery. These are the electronics you still buy (the mechanical parts are uncha
 | Qty | Item | Why it can't be on the board | Link |
 |---:|---|---|---|
 | 1 | **GPS** Beitian BN-220 | needs to see the sky from the mast | [Amazon UK](https://www.amazon.co.uk/s?k=Beitian+BN-220+GPS) |
-| 1 | **Depth sensor** MS5837-30BA module | must touch the water, through the rear cap | [Amazon UK](https://www.amazon.co.uk/s?k=MS5837-30BA) · [eBay UK](https://www.ebay.co.uk/sch/i.html?_nkw=MS5837-30BA) |
-| 1 | **4-in-1 ESC** (BLHeli_S / Bluejay / AM32, 30.5 mm) | 15 A of motor current and its own firmware | [Amazon UK](https://www.amazon.co.uk/s?k=4+in+1+ESC+45A+30.5mm+BLHeli_S) |
+| 1 | **Depth sensor** MS5837-30BA module with the pins already fitted (+ female-to-male jumper wires) | must touch the water, through the rear cap | [Amazon UK](https://www.amazon.co.uk/s?k=MS5837-30BA) · [eBay UK](https://www.ebay.co.uk/sch/i.html?_nkw=MS5837-30BA) |
+| 4 | **Single ESCs** (BLHeli_S / Bluejay, 20–30 A, DShot) **with their wires already attached** | they carry the motor current | [Amazon UK](https://www.amazon.co.uk/s?k=BLHeli_S+30A+ESC+2-4S+4+pack) |
 | 4 | **Motors** A2212 1000KV | they are the thrusters | [Amazon UK](https://www.amazon.co.uk/s?k=A2212+1000KV+brushless+motor) |
 | 1 | **Battery** 3S 18650 pack with BMS and XT60 | (+ charger) | [Amazon UK](https://www.amazon.co.uk/s?k=3S+18650+battery+pack+BMS+11.1V+XT60) |
 | 1 | **GoPro** HERO5/6/7 Black + 64 GB card + short USB-A to USB-C cable | the 4K camera | [eBay UK](https://www.ebay.co.uk/sch/i.html?_nkw=GoPro+HERO5+Black) |
 | 2 | **868 MHz antennas** with a U.FL plug: one with a ~30 cm cable for the mast, one for the shore board | the antenna must be above water | [Amazon UK](https://www.amazon.co.uk/s?k=868MHz+antenna+IPEX+u.fl) |
 | 1 | **Small magnet** (6–10 mm neodymium disc) | it is the on/off key | [Amazon UK](https://www.amazon.co.uk/s?k=N52+neodymium+magnet+10mm+x+5mm) |
-| 1 | **JST PH 2.0 pre-crimped cables** (2- and 4-pin), and an XT30 male lead for the ESC | to plug things in | [Amazon UK](https://www.amazon.co.uk/s?k=JST+PH+2.0+connector+kit+pre-crimped) · [XT30](https://www.amazon.co.uk/s?k=XT30+male+pigtail) |
-| 1 | Strobe LED (1 W white + 47 Ω 1 W resistor), optional | it sits in the mast | [Amazon UK](https://www.amazon.co.uk/s?k=1W+white+LED+star) |
+| 1 | **Wiring kit:** heat-shrink crimp splices (22–16 AWG), 2 Wago 221-415 lever connectors, an XT30 male lead | joins without solder | [splices](https://www.amazon.co.uk/s?k=heat+shrink+butt+connectors+waterproof+22-16+AWG) · [Wago](https://www.amazon.co.uk/s?k=Wago+221-415) · [XT30](https://www.amazon.co.uk/s?k=XT30+male+pigtail+14AWG) |
+| 1 | Strobe: a **12 V white LED with wires attached** (built-in resistor) | it sits in the mast | [Amazon UK](https://www.amazon.co.uk/s?k=12V+white+LED+pre+wired) |
 
 Compared with the rev 1 board this removes the ESP32 DevKit, the BNO085, the BME280, two E220 radios, the USB
 serial adapter, the reed switch, the USB-A breakout, the 38 lines of loose PCB parts and all of the soldering.
+The full list for the whole sub, with links, is the [solder-free shopping list](../bom/shopping_list.md).
 
 ## Cost
 
@@ -83,8 +88,8 @@ Rough numbers from JLCPCB's parts library on 2026-11-11 (check the live quote, p
 | | USD |
 |---|---:|
 | Parts for two boards (BNO055 $9, BME280 $8, Ra-01H $6.50 and ESP32 $4.60 each are most of it) | ~80 |
-| "Extended part" loading fee, 20 kinds of part x $3 | ~60 |
-| Assembly setup, stencil, through-hole soldering for the 3 big connectors | ~35 |
+| "Extended part" loading fee, 19 kinds of part x $3 | ~57 |
+| Assembly setup, stencil, machine soldering of the through-hole connectors and screw terminals | ~35 |
 | 5 bare PCBs (2 get assembled, 3 spare) | ~10 |
 | Shipping to the UK | ~15–30 |
 | **Total before VAT** | **~200–215** |
@@ -98,8 +103,8 @@ shore station.
 **Ways to bring it down:**
 * Leave out the hull monitor U10 (BME280): mark it "do not place" on the BOM page. Saves about £17. The leak
   probes still work, and you lose the automatic vacuum test.
-* Choose **Economic** assembly and leave out J1, J2 and J13 (the three through-hole connectors). Solder those
-  three yourself (XT60PW-M, XT30UPB-F, USB-A socket, about £5 from Amazon). Saves roughly £20–25.
+* (Not for a solder-free build: choosing **Economic** assembly and soldering the through-hole connectors and
+  screw terminals yourself saves roughly £20–25.)
 
 ## Ordering from JLCPCB, step by step
 
@@ -115,7 +120,8 @@ shore station.
    "out of stock", pick the suggested alternative with the same package and value.
 6. **Check the placement preview.** The CPL already includes the usual JLCPCB rotation fixes, but look at every
    chip: the dot or notch on the part must match the dot on the footprint, the electrolytic capacitors'
-   stripe must be on the minus side, and the USB, JST and XT connectors must face the board edge. Rotate any that
+   stripe must be on the minus side, and the USB and XT connectors and the screw terminals (wire openings) must face
+   the board edge. Rotate any that
    are wrong right there on the page. JLCPCB's engineers check it again before they build.
 7. Pay. Boards usually arrive in about 1–2 weeks.
 
@@ -124,22 +130,40 @@ shore station.
 | Ref | Silkscreen | Pins (1 → n) | Goes to |
 |---|---|---|---|
 | J1 | BATTERY | 1 −, 2 + (XT60 male) | battery (XT60 female) |
-| J2 | ESC POWER | 1 −, 2 + (XT30 female) | 4-in-1 ESC power input |
-| J10 | ESC | 1 GND, 2 not used (ESC VBAT), 3 CUR, 4 TLM, 5 M1, 6 M2, 7 M3, 8 M4 (JST-SH 1.0) | 4-in-1 ESC signal cable |
-| J5 | GPS | 1 +5 V, 2 GND, 3 TX (from the GPS), 4 RX (to the GPS) | BN-220 |
-| J6 | DEPTH (port edge, middle) | 1 +3.3 V, 2 GND, 3 SDA, 4 SCL | MS5837-30BA (address 0x76) |
-| J8 / J9 | LEAK F / LEAK R | 1 sense, 2 GND | leak probes (two bare wire ends at the lowest point of the hull) |
-| J11 | STROBE | 1 +battery, 2 switched − | strobe LED (with its resistor) in the mast |
-| J12 | AUX | 1 +battery, 2 switched − (up to 3 A, flyback diode fitted) | lights or a pump |
+| J2 | ESC POWER | 1 −, 2 + (XT30 female) | XT30 lead → two Wago lever connectors → the four ESC power leads |
+| J10 + J17 | G M1 M2 / M3 M4 (screws, starboard edge) | ground, then the four DShot signals | the ESCs' signal wires (and one ground) |
+| J5 + J15 | 5V G / TX RX (screws, starboard edge) | +5 V, GND, TX from the GPS, RX to the GPS | BN-220 GPS |
+| J6 + J16 | 3V3 G / SDA SCL (screws, port edge) | +3.3 V, GND, I2C | MS5837-30BA depth sensor (address 0x76) |
+| J8 / J9 | LF G / LR G (screws, port edge) | leak sense, GND | leak probes: two bare wire ends each, at the lowest point of the hull |
+| J11 | S+ S- (screws, port edge) | +battery, switched − | 12 V strobe LED in the mast |
+| J12 | A+ A- (screws, port edge) | +battery, switched − (up to 3 A, flyback diode fitted) | lights or a pump |
 | J13 | CAMERA 5V | USB-A, 5 V switched, 1.5 A fuse | GoPro (its own USB cable) |
 | J3 | USB | USB-C | laptop: programming, serial monitor, shore station |
 | J4 | LORA ANT | U.FL | 868 MHz antenna |
 
-**ESC cable:** 4-in-1 ESCs ship with an 8-pin JST-SH cable but the pin order varies between brands. Compare
-your ESC's manual with the table above. GND and the four motor signals are what matter; the motor order can be
-changed in the firmware. If your cable's order is different, move the pins in the little plastic housing with a
-needle (lift the tab, slide the wire out, push it into the right slot). The board does not use the ESC's VBAT
-pin, and every signal has a 1 kΩ resistor, so a mistake will not damage the ESP32.
+**Screw terminals:** 3.5 mm pitch, they take wires from 28 AWG (thin GPS wires) to 16 AWG. Strip 5 mm, twist the
+strands, push the wire in fully and tighten the screw with a 2.5 mm screwdriver. The label next to each screw on the
+board says what goes there. Every ESC signal has a 1 kΩ resistor, so a wire in the wrong screw will not damage
+the ESP32.
+
+## Building it without soldering
+
+| Join | How | Parts |
+|---|---|---|
+| Battery → board | XT60 plug | already on the battery |
+| Board → 4 ESCs (power) | XT30 lead into ESC POWER; its red wire and the four ESC red wires go into one Wago 221-415, the black wires into the other | XT30 male lead, 2 Wago 221-415 |
+| ESC signal wires → board | Screw terminals M1–M4, plus one ESC ground wire into G. If an ESC also has a red "BEC" wire, leave it unconnected and cover the end with heat-shrink | — |
+| ESC motor wires → thruster cables (inside the hull) | Heat-shrink crimp butt splices: crimp, then shrink | 12 splices |
+| Thruster cables → motors (in the water) | The same splices; the glue inside seals them. Add a second layer of adhesive heat-shrink over each | 12 splices |
+| GPS → board | Cut the plug off the free end of its cable, strip the 4 wires, screw them in | — |
+| Depth sensor → board | Female-to-male jumper wires onto its pins, the pin ends into the screw terminals | 4 jumper wires |
+| Strobe | A 12 V LED with wires attached, straight into S+ / S- | — |
+| Leak probes | Two stripped wire ends each, into LF / G and LR / G | thruster cable offcut |
+| Camera, antennas, laptop | USB-A, U.FL and USB-C plugs | — |
+
+Tools: a ratchet crimper for insulated terminals, a wire stripper, a heat gun (or a lighter) and a small
+screwdriver. The 3D-printed parts use heat-set inserts, which are pushed in with a hot tip (a heat-set insert
+tool); that is not soldering and uses no solder.
 
 ## Switching it on and off: the magnet
 
@@ -222,8 +246,8 @@ details for the core board:
 
 ## Design checks
 
-* 150 x 60 mm, 2 layers, 1.6 mm, ground pour on both sides. 127 footprints, 76 nets,
-  1480 track segments, 270 vias.
+* 150 x 60 mm, 2 layers, 1.6 mm, ground pour on both sides. 126 footprints, 73 nets,
+  1504 track segments, 262 vias.
 * Schematic netlist (exported by KiCad) matches `design.py`: **0 mismatches**. The pin map above is checked
   against the ESP32 module's pins by script: **0 mismatches**.
 * Placement check: no courtyard overlaps, and nothing inside the ESP32 antenna keep-out.

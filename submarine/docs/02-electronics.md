@@ -7,8 +7,9 @@ so the hull, sled and wiring are the same either way.
 |---|---|---|
 | What arrives | A bare PCB. You solder about 90 parts and plug in an ESP32-S3 DevKit and an E220 radio | Two boards, fully assembled by JLCPCB. Nothing to solder |
 | Cost | About £95 of parts | About £190–205 for two finished boards (the second one is the shore radio) |
-| Electronics you still buy | About 20 separate items | GPS, depth sensor, ESC, motors, battery, camera, two antennas, a magnet, plug-in cables |
-| Best if | You want the cheapest build and like soldering | You want the fewest things to buy and no soldering |
+| Electronics you still buy | About 20 separate items | GPS, depth sensor, four ESCs, motors, battery, camera, two antennas, a magnet, splices |
+| Soldering | Yes: the board and the wiring | **None anywhere**: screw terminals, plugs, lever connectors, crimp splices |
+| Best if | You want the cheapest build and like soldering | You want no soldering and the fewest things to buy |
 
 Sections 2.1 to 2.9 describe the rev 1 carrier board. [Section 2.10](#210-the-minnow-core-board) sums up how the
 Core board differs, and [`pcb-core/README.md`](../pcb-core/README.md) has its full guide (ordering, pin map,
@@ -239,7 +240,9 @@ The Core board does the same jobs as the rev 1 board, with every part soldered b
 * **On-board sensors:** BNO055 compass/IMU (at the front of the board, away from the battery current) and BME280
   hull monitor.
 * **LoRa:** Ra-01H (SX1276, 868 MHz) with a U.FL antenna socket. A second Core board on USB is the shore station.
-* **Sockets:** side-entry JST-PH for GPS, depth, leak probes, strobe and AUX; JST-SH 8-pin for the ESC
-  cable; USB-A for the camera; XT60 in and XT30 out.
+* **Wiring without solder:** screw terminals (each screw labelled) for the GPS, depth sensor, leak probes, strobe,
+  AUX and the signal wires of four single ESCs; USB-A for the camera; XT60 in and XT30 out to the ESCs, which share
+  it through two lever connectors. With crimp splices for the motor cables, the whole sub needs no soldering
+  (see the [solder-free shopping list](../bom/shopping_list.md)).
 * Pin map, connector pinouts, cost and the ordering steps: [`pcb-core/README.md`](../pcb-core/README.md).
 

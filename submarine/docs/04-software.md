@@ -24,7 +24,8 @@ code can be written (and tested) one piece at a time.
 
 > **Building the Minnow Core board?** It uses the classic ESP32 (board "ESP32 Dev Module"), a BNO055 compass
 > (library *Adafruit BNO055*) and a Ra-01H LoRa radio driven with *RadioLib*; the shore station is a second Core
-> board on USB. Its pin map and library settings are in [`pcb-core/README.md`](../pcb-core/README.md#esp32-pin-map).
+> board on USB. It drives four single ESCs instead of a 4-in-1 (the same DShot signals and 3D-mode commands). Its
+> pin map and library settings are in [`pcb-core/README.md`](../pcb-core/README.md#esp32-pin-map).
 > Everything else in this chapter (state machine, control loops, failsafes, telemetry format) is the same.
 
 ## 4.2 Structure

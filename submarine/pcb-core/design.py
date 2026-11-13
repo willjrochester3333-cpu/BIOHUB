@@ -38,7 +38,7 @@ PROJECT = 'minnow-core'
 #   IO15 magnet sense, IO5 LoRa chip-select (pulled up).
 # ---------------------------------------------------------------------------
 ESP_PINS = {
-    '1': 'GND', '2': '+3V3', '3': 'ESP_EN', '4': 'VBAT_SENSE', '5': 'ESC_CURR_F', '6': 'LEAK_F', '7': 'LEAK_R',
+    '1': 'GND', '2': '+3V3', '3': 'ESP_EN', '4': 'VBAT_SENSE', '5': None, '6': 'LEAK_F', '7': 'LEAK_R',
     '8': 'PWR_HOLD', '9': 'ESC_M1', '10': 'ESC_M2', '11': 'ESC_M3', '12': 'ESC_M4', '13': 'STROBE_EN',
     '14': 'AUX_EN', '15': 'GND', '16': 'CAM_EN', '17': None, '18': None, '19': None, '20': None, '21': None,
     '22': None, '23': 'MAG_SENSE', '24': 'LED_STAT', '25': 'ESP_IO0', '26': 'LORA_DIO0', '27': 'GPS_TX',
@@ -57,7 +57,7 @@ GPIO_MAP = [  # (GPIO, net, note) - for the docs and the firmware
     (27, 'ESC_M4', 'DShot motor 4'), (32, 'PWR_HOLD', 'keeps the power switch on'),
     (33, 'ESC_M1', 'DShot motor 1'), (34, 'LEAK_F', 'leak probe front (ADC1)'),
     (35, 'LEAK_R', 'leak probe rear (ADC1)'), (36, 'VBAT_SENSE', 'battery voltage x 22/122 (ADC1)'),
-    (39, 'ESC_CURR_F', 'ESC current sensor (ADC1)'),
+    (39, '-', 'spare input (ADC1)'),
 ]
 
 # ---------------------------------------------------------------------------
@@ -67,7 +67,7 @@ R0805 = 'Resistor_SMD:R_0805_2012Metric'
 C0805 = 'Capacitor_SMD:C_0805_2012Metric'
 C1206 = 'Capacitor_SMD:C_1206_3216Metric'
 SOT23 = 'Package_TO_SOT_SMD:SOT-23'
-PH = 'Connector_JST:JST_PH_S{n}B-PH-SM4-TB_1x{n:02d}-1MP_P2.00mm_Horizontal'
+TB = 'TerminalBlock_Phoenix:TerminalBlock_Phoenix_PT-1,5-{n}-3.5-H_1x{n:02d}_P3.50mm_Horizontal'
 
 # JLCPCB basic parts (no feeder fee) for the passives
 R_LCSC = {'100R': 'C17408', '1k': 'C17513', '2.2k': 'C17520', '4.7k': 'C17673', '5.1k': 'C27834', '10k': 'C17414',
@@ -103,13 +103,16 @@ def SCHOTTKY_SMALL(ref, k, a, pcb, blk):
                 pcb=pcb, blk=blk, lcsc='C7502694', mpn='BAT54WS Schottky SOD-323')
 
 
-def conn(ref, n, nets, pcb, blk, val, lcsc):
-    return dict(ref=ref, sym=f'Connector_Generic:Conn_01x{n:02d}', val=val, fp=PH.format(n=n),
-                pins={str(i + 1): net for i, net in enumerate(nets)}, pcb=pcb, blk=blk, lcsc=lcsc,
-                mpn=f'JST PH {n}-pin side-entry SMD S{n}B-PH-SM4-TB')
+def term(ref, nets, labels, pcb, blk, val):
+    """Screw terminal, 3.5 mm pitch (DB125-3.5, takes 16-28 AWG wire): strip the wire, tighten the screw.
+    The wire entries face the nearest board edge. 'labels' are printed on the board next to each screw."""
+    n = len(nets)
+    return dict(ref=ref, sym=f'Connector_Generic:Conn_01x{n:02d}', val=val, fp=TB.format(n=n),
+                pins={str(i + 1): net for i, net in enumerate(nets)}, pcb=pcb, blk=blk,
+                lcsc={2: 'C466970', 3: 'C466971'}[n], labels=labels,
+                mpn=f'{n}-way screw terminal, 3.5 mm pitch, 16-28 AWG (DB125-3.5-{n}P) - through-hole')
 
 
-PH2, PH4 = 'C295747', 'C265102'
 
 PARTS = [
     # ================= battery in, 15 A fuse, magnet soft-latch high-side switch =================
@@ -178,7 +181,7 @@ PARTS = [
     R('R11', '10k', 'BUCK_FB', 'GND', (64.5, 22.8, 0), 'buck'),
     R('R12', '100k', 'VSYS', 'BUCK_EN', (55.0, 26.0, 0), 'buck', 'starts at 6.6 V'),
     R('R13', '22k', 'BUCK_EN', 'GND', (55.0, 23.8, 0), 'buck'),
-    R('R14', '2.2k', '+5V', 'LED_5V', (64.5, 51.8, 0), 'buck'),
+    R('R14', '2.2k', '+5V', 'LED_5V', (66.8, 51.9, 0), 'buck'),
     dict(ref='D4', sym='Device:LED', val='green', fp='LED_SMD:LED_0805_2012Metric', pins={'1': 'GND', '2': 'LED_5V'},
          pcb=(68.0, 49.5, 180), blk='buck', lcsc='C2297', mpn='green LED 0805 (5 V on)'),
 
@@ -273,38 +276,34 @@ PARTS = [
     C('C29', '100nF', '+3V3', 'GND', (93.0, 23.5, 0), 'sensors'),
     R('R25', '4.7k', 'SDA', '+3V3', (88.5, 18.0, 90), 'sensors', 'I2C pull-up'),
     R('R26', '4.7k', 'SCL', '+3V3', (86.0, 18.0, 90), 'sensors', 'I2C pull-up'),
-    conn('J5', 4, ['+5V', 'GND', 'GPS_TX', 'GPS_RX'], (36.0, 54.9, 0), 'sensors', 'GPS (5V,G,TX,RX)', PH4),
-    conn('J6', 4, ['+3V3', 'GND', 'SDA', 'SCL'], (84.0, 5.1, 180), 'sensors', 'DEPTH (3V3,G,SDA,SCL)', PH4),
-    conn('J8', 2, ['LEAK_F', 'GND'], (33.0, 5.1, 180), 'sensors', 'LEAK FRONT', PH2),
+    term('J5', ['+5V', 'GND'], ['5V', 'G'], (30.25, 54.9, 0), 'sensors', 'GPS power'),
+    term('J15', ['GPS_TX', 'GPS_RX'], ['TX', 'RX'], (38.45, 54.9, 0), 'sensors', 'GPS data'),
+    term('J6', ['+3V3', 'GND'], ['3V3', 'G'], (82.0, 5.0, 180), 'sensors', 'DEPTH power'),
+    term('J16', ['SDA', 'SCL'], ['SDA', 'SCL'], (90.2, 5.0, 180), 'sensors', 'DEPTH I2C'),
+    term('J8', ['LEAK_F', 'GND'], ['LF', 'G'], (35.0, 5.0, 180), 'sensors', 'LEAK FRONT'),
     R('R27', '100k', 'LEAK_F', '+3V3', (79.0, 12.6, 90), 'sensors'),
     C('C30', '100nF', 'LEAK_F', 'GND', (81.2, 12.6, 90), 'sensors'),
-    conn('J9', 2, ['LEAK_R', 'GND'], (42.5, 5.1, 180), 'sensors', 'LEAK REAR', PH2),
+    term('J9', ['LEAK_R', 'GND'], ['LR', 'G'], (44.0, 5.0, 180), 'sensors', 'LEAK REAR'),
     R('R28', '100k', 'LEAK_R', '+3V3', (83.4, 12.6, 90), 'sensors'),
     C('C31', '100nF', 'LEAK_R', 'GND', (85.6, 12.6, 90), 'sensors'),
 
     # ================= 4-in-1 ESC (DShot) =================
-    dict(ref='J10', sym='Connector_Generic:Conn_01x08', val='ESC SIGNAL', fp='Connector_JST:JST_SH_SM08B-SRSS-TB_1x08-1MP_P1.00mm_Horizontal',
-         pins={'1': 'GND', '2': None, '3': 'ESC_CURR', '4': 'ESC_TLM', '5': 'ESC_M1_O', '6': 'ESC_M2_O',
-               '7': 'ESC_M3_O', '8': 'ESC_M4_O'},
-         pcb=(3.3, 19.0, 270), blk='esc', lcsc='C160407',
-         mpn='JST SH 8-pin SMD SM08B-SRSS-TB: G, (VBAT not used), CUR, TLM, M1-M4'),
-    R('R29', '1k', 'ESC_M1', 'ESC_M1_O', (9.5, 16.0, 0), 'esc', 'limits current if a wire is crossed'),
-    R('R30', '1k', 'ESC_M2', 'ESC_M2_O', (9.5, 18.2, 0), 'esc'),
-    R('R31', '1k', 'ESC_M3', 'ESC_M3_O', (9.5, 20.4, 0), 'esc'),
-    R('R32', '1k', 'ESC_M4', 'ESC_M4_O', (9.5, 22.6, 0), 'esc'),
-    R('R33', '1k', 'ESC_CURR', 'ESC_CURR_F', (14.0, 19.0, 0), 'esc'),
-    R('R34', '10k', 'ESC_CURR', 'GND', (14.0, 21.2, 0), 'esc', 'holds the input low with no ESC'),
-    C('C32', '100nF', 'ESC_CURR_F', 'GND', (14.0, 23.4, 0), 'esc'),
+    term('J10', ['GND', 'ESC_M1_O', 'ESC_M2_O'], ['G', 'M1', 'M2'], (46.8, 54.9, 0), 'esc', 'ESC signal 1'),
+    term('J17', ['ESC_M3_O', 'ESC_M4_O'], ['M3', 'M4'], (58.5, 54.9, 0), 'esc', 'ESC signal 2'),
+    R('R29', '1k', 'ESC_M1', 'ESC_M1_O', (45.5, 49.4, 0), 'esc', 'limits current if a wire is crossed'),
+    R('R30', '1k', 'ESC_M2', 'ESC_M2_O', (49.0, 49.4, 0), 'esc'),
+    R('R31', '1k', 'ESC_M3', 'ESC_M3_O', (52.5, 49.4, 0), 'esc'),
+    R('R32', '1k', 'ESC_M4', 'ESC_M4_O', (56.0, 49.4, 0), 'esc'),
 
     # ================= switched outputs: strobe and spare (lights / pump) =================
     NFET('Q7', 'STROBE_EN', 'GND', 'STROBE_D', (52.5, 12.5, 0), 'outputs'),
     R('R35', '100k', 'STROBE_EN', 'GND', (52.5, 15.8, 0), 'outputs'),
-    conn('J11', 2, ['VSYS', 'STROBE_D'], (52.5, 5.1, 180), 'outputs', 'STROBE (+BATT, -)', PH2),
+    term('J11', ['VSYS', 'STROBE_D'], ['S+', 'S-'], (53.0, 5.0, 180), 'outputs', 'STROBE'),
     NFET('Q8', 'AUX_EN', 'GND', 'AUX_D', (62.5, 12.5, 0), 'outputs'),
     R('R36', '100k', 'AUX_EN', 'GND', (62.5, 15.8, 0), 'outputs', 'also keeps IO12 low at reset'),
     dict(ref='D7', sym='Device:D_Schottky', val='SS34', fp='Diode_SMD:D_SMA', pins={'1': 'VSYS', '2': 'AUX_D'},
          pcb=(62.5, 19.5, 0), blk='outputs', lcsc='C8678', mpn='SS34 flyback diode (pumps, motors)'),
-    conn('J12', 2, ['VSYS', 'AUX_D'], (62.5, 5.1, 180), 'outputs', 'AUX (+BATT, -)', PH2),
+    term('J12', ['VSYS', 'AUX_D'], ['A+', 'A-'], (62.0, 5.0, 180), 'outputs', 'AUX'),
 
     # ================= camera 5 V port =================
     PFET('Q9', 'CAM_PG', '+5V', 'CAM_5V_SW', (126.0, 42.0, 0), 'camera'),
@@ -320,8 +319,6 @@ PARTS = [
          mpn='Molex 67643 USB-A socket (D+ joined to D- = "charger", so the camera may draw 1.5 A) - through-hole'),
 
     # ================= test points and mounting holes =================
-    dict(ref='TP1', sym='Connector:TestPoint', val='ESC_TLM', fp='TestPoint:TestPoint_Pad_D1.5mm', pins={'1': 'ESC_TLM'},
-         pcb=(21.0, 20.5, 0), blk='misc', lcsc='', mpn='test pad'),
     dict(ref='TP2', sym='Connector:TestPoint', val='GND', fp='TestPoint:TestPoint_Pad_D1.5mm', pins={'1': 'GND'},
          pcb=(28.0, 43.0, 0), blk='misc', lcsc='', mpn='test pad'),
     dict(ref='TP3', sym='Connector:TestPoint', val='VSYS', fp='TestPoint:TestPoint_Pad_D1.5mm', pins={'1': 'VSYS'},
@@ -368,7 +365,7 @@ BLOCK_TITLES = {
     'mcu': 'ESP32-WROOM-32E (Wi-Fi to the camera, BLE)',
     'lora': 'LoRa radio (Ai-Thinker Ra-01H, SX1276, 868 MHz) and antenna socket',
     'sensors': 'Sensors: BNO055 compass/IMU, BME280 hull monitor, GPS, depth, leak',
-    'esc': '4-in-1 ESC signals (DShot) and current sense',
+    'esc': 'ESC signals (DShot to four single ESCs)',
     'outputs': 'Switched outputs: strobe and spare (lights / pump)',
     'camera': '4K camera: switched 5 V USB-A port',
     'misc': 'Test points and mounting holes',

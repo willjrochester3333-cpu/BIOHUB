@@ -82,7 +82,8 @@ flowchart LR
 ## Budget
 
 The full itemised list is [`bom/bom.csv`](bom/bom.csv); the summary is [`bom/bom_summary.md`](bom/bom_summary.md).
-**Ready to order? Use the [shopping list](bom/shopping_list.md)**: every part, grouped by shop, with links.
+**Ready to order?** The [solder-free shopping list](bom/shopping_list.md) (Core board) or the
+[rev 1 shopping list](bom/shopping_list_rev1.md) (you solder): every part, grouped by shop, with links.
 
 | | Cost |
 |---|---:|
@@ -92,9 +93,11 @@ The full itemised list is [`bom/bom.csv`](bom/bom.csv); the summary is [`bom/bom
 | Of which most makers already own (filament, screws, glue, wire, SD card...) | £72 |
 | **Everything, if you have the usual workshop supplies** | **£258** |
 
-**Rather not solder?** The [Minnow Core board](pcb-core/README.md) arrives fully assembled from JLCPCB and replaces
-the ESP32 DevKit, compass, hull sensor, both radios, USB adapter, reed switch, camera socket and all 38 lines of
-board parts. Two finished boards cost about £190–205, roughly £110–125 more than the parts they replace.
+**No soldering at all?** Build it with the [Minnow Core board](pcb-core/README.md), which JLCPCB assembles
+completely, plus screw terminals, lever connectors and crimp splices for the wiring: see the
+[solder-free shopping list](bom/shopping_list.md). It costs about **£477** from scratch (**£415** with the usual
+supplies), mainly because the two assembled boards cost about £198. The rev 1 list above is
+[`bom/shopping_list_rev1.md`](bom/shopping_list_rev1.md).
 
 Prices are rough UK prices (late 2026). The biggest single items are the used GoPro (£50), the ESP32 and
 sensors, and the 4-in-1 ESC. The [budget summary](bom/bom_summary.md) lists ways to save more.

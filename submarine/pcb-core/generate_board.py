@@ -255,7 +255,16 @@ def add_zones_and_text(board, nets, keepout=True):
         board.Add(z)
     if keepout:
         add_keepout(board)
+    hide_terminal_refs(board)
     add_silk(board)
+
+
+def hide_terminal_refs(board):
+    """The screw terminals get a label per screw instead of their reference text."""
+    tb = {p['ref'] for p in DZ.PARTS if p['fp'].startswith('TerminalBlock')}
+    for fp in board.GetFootprints():
+        if fp.GetReference() in tb:
+            fp.Reference().SetVisible(False)
 
 
 def add_silk(board):
@@ -272,7 +281,6 @@ def add_silk(board):
         ('MAGNET SENSOR U2: hold the magnet on the hull here', 29.0, 1.4, 0.8, pcbnew.B_SilkS),
         ('BATTERY 3S', 9.0, 43.4, 0.9, pcbnew.F_SilkS),
         ('ESC POWER', 16.5, 58.4, 0.9, pcbnew.F_SilkS),
-        ('ESC: G - CUR TLM M1 M2 M3 M4', 13.0, 26.3, 0.8, pcbnew.F_SilkS),
         ('MAGNET', mx, 13.25, 0.8, pcbnew.F_SilkS),
         ('CAMERA 5V', 130.0, 58.6, 0.9, pcbnew.F_SilkS),
         ('LORA ANT', 75.5, 35.6, 0.8, pcbnew.F_SilkS),
@@ -289,6 +297,20 @@ def add_silk(board):
         if layer == pcbnew.B_SilkS:
             t.SetMirrored(True)
         board.Add(t)
+    # a label next to every screw of the screw terminals (their reference text would sit on top of it)
+    for p in DZ.PARTS:
+        if not p.get('labels'):
+            continue
+        ox, oy, rot = p['pcb']
+        sgn = 1 if rot == 0 else -1           # rot 0: starboard edge, rot 180: port edge
+        for k, lab in enumerate(p['labels']):
+            t = pcbnew.PCB_TEXT(board)
+            t.SetText(lab)
+            t.SetPosition(V(kx(ox + sgn * 3.5 * k), ky(oy - sgn * 4.3)))
+            t.SetLayer(pcbnew.F_SilkS)
+            t.SetTextSize(V(0.8, 0.8))
+            t.SetTextThickness(F(0.15))
+            board.Add(t)
     # bottom-side arrow from the label to the board edge, right under the magnet sensor
     for x1, y1, x2, y2 in ((mx + 2.0, 1.4, mx, 1.4), (mx, 1.4, mx + 0.9, 0.8), (mx, 1.4, mx + 0.9, 2.0)):
         sh = pcbnew.PCB_SHAPE(board)
@@ -305,6 +327,7 @@ def step_relabel():
     import pcbnew
     path = os.path.join(HERE, f'{PROJECT}.kicad_pcb')
     board = pcbnew.LoadBoard(path)
+    hide_terminal_refs(board)
     for d in list(board.GetDrawings()):
         if d.GetLayer() in (pcbnew.F_SilkS, pcbnew.B_SilkS):
             board.Remove(d)
@@ -732,6 +755,8 @@ def pre_route(board):
     for ref in ('D3', 'C5', 'C6'):
         tx, ty = P(ref, '1')
         add_track(board, 'VSYS', [(xt, ty), (tx, ty)], 2.0)
+    r8 = P('R8', '1')                          # battery-voltage divider, next to the trunk
+    add_track(board, 'VSYS', [r8, (r8[0], OY + 33.4), (xt, OY + 33.4)], 0.6)
     # ESC / battery return on the bottom layer
     add_track(board, 'GND', [P('J1', '1'), K(17.5, 43.0), K(13.0, 47.5), K(13.0, 55.0), P('J2', '1')], 3.0,
               layer='B.Cu')
@@ -955,8 +980,30 @@ def step_stitch(pitch=4.0, via_d=0.7, via_drill=0.35):
         y += pitch
     board.BuildConnectivity()
     pcbnew.ZONE_FILLER(board).Fill(board.Zones())
+    removed = drop_stranded_vias(board)
     board.Save(path)
-    print(f'[stitch] {added} ground vias added')
+    print(f'[stitch] {added} ground vias added, {removed} removed again (stranded in small copper islands)')
+
+
+def drop_stranded_vias(board):
+    """Remove ground vias that ended up outside the filled ground pour on either layer."""
+    import pcbnew
+    zones = [z for z in board.Zones() if z.GetNetname() == 'GND' and not z.GetIsRuleArea()]
+    ends = set()
+    for t in board.GetTracks():
+        if t.GetClass() != 'PCB_VIA' and t.GetNetname() == 'GND':
+            ends |= {(t.GetStart().x, t.GetStart().y), (t.GetEnd().x, t.GetEnd().y)}
+    removed = 0
+    for v in [t for t in board.GetTracks() if t.GetClass() == 'PCB_VIA' and t.GetNetname() == 'GND']:
+        pos = v.GetPosition()
+        on = {lay for z in zones for lay in (pcbnew.F_Cu, pcbnew.B_Cu)
+              if z.IsOnLayer(lay) and z.HitTestFilledArea(lay, pos)}
+        if len(on) < 2 and (pos.x, pos.y) not in ends:
+            board.Remove(v)
+            removed += 1
+    if removed:
+        pcbnew.ZONE_FILLER(board).Fill(board.Zones())
+    return removed
 
 
 def step_drc():
@@ -997,7 +1044,7 @@ BODY = [  # (footprint name prefix, width, depth, height, colour, shape) for the
     ('Fuse_1812', 4.5, 3.2, 1.2, 'yellow', 'box'), ('Fuse_1206', 3.2, 1.6, 1.0, 'yellow', 'box'),
     ('CP_Elec_6.3', 6.6, 6.6, 7.7, 'esp_silver', 'cyl'), ('L_Bourns_SRR1260', 12.5, 12.5, 6.0, 'black', 'box'),
     ('Crystal_SMD_3215', 3.2, 1.5, 0.9, 'esp_silver', 'box'), ('SW_Push_1P1T_XKB', 5.1, 5.1, 1.5, 'black', 'box'),
-    ('JST_PH_S', 0, 0, 4.8, 'beige', 'box'), ('JST_SH_SM', 0, 0, 2.9, 'beige', 'box'),
+    ('TerminalBlock_Phoenix_PT', 0, 0, 8.5, 'tb_green', 'box'),
 ]
 
 
@@ -1040,7 +1087,7 @@ JLC_ROT = [
     (r'^CP_Elec_6.3x7.7', 180), (r'^USB_C_Receptacle_HRO_TYPE-C-31-M-12', 180), (r'^ESP32-W', 270),
     (r'^JST_PH_S', 180),
 ]
-THT_REFS = {'J1', 'J2', 'J13'}
+THT_REFS = {'J1', 'J2', 'J13'} | {p['ref'] for p in DZ.PARTS if p['fp'].startswith('TerminalBlock')}
 
 
 def write_jlc_files(board, out):
